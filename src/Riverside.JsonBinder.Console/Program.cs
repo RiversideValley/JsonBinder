@@ -1,97 +1,76 @@
-﻿
+﻿using System.CommandLine;
 using System.Text.Json;
+using System.CommandLine.NamingConventionBinder;
 using Riverside.JsonBinder;
+
+namespace Riverside.JsonBinder.Console;
 
 public class Program
 {
-    public static void Main()
+    public static int Main(string[] args)
     {
-        while (true)
-        {
-            DisplayMainMenu();
-            string choice = Console.ReadLine()?.Trim();
+        var rootCommand = new RootCommand("JSON to Classes Converter");
 
-            switch (choice)
-            {
-                case "1":
-                    ConvertJsonToClasses();
-                    break;
-                case "2":
-                    DisplayHelp();
-                    break;
-                case "3":
-                    ExitApplication();
-                    return;
-                default:
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Invalid option. Please select a valid menu option.\n");
-                    Console.ResetColor();
-                    break;
-            }
-        }
+        var convertCommand = new Command("convert", "Convert JSON to Classes")
+        {
+            new Option<string>("--json", "The JSON string to convert"),
+            new Option<string[]>("--languages", "Comma-separated list of target languages")
+        };
+        convertCommand.Handler = CommandHandler.Create<string, string[]>(ConvertJsonToClasses);
+
+        var helpCommand = new Command("help", "Display help information")
+        {
+            Handler = CommandHandler.Create(DisplayHelp)
+        };
+
+        var exitCommand = new Command("exit", "Exit the application")
+        {
+            Handler = CommandHandler.Create(ExitApplication)
+        };
+
+        rootCommand.AddCommand(convertCommand);
+        rootCommand.AddCommand(helpCommand);
+        rootCommand.AddCommand(exitCommand);
+
+        return rootCommand.InvokeAsync(args).Result;
     }
 
-    private static void DisplayMainMenu()
+    private static void ConvertJsonToClasses(string json, string[] languages)
     {
-        Console.Clear();
-        Console.WriteLine("=========================================");
-        Console.WriteLine("      JSON to Classes Converter");
-        Console.WriteLine("=========================================");
-        Console.WriteLine("1. Convert JSON to Classes");
-        Console.WriteLine("2. Help");
-        Console.WriteLine("3. Exit");
-        Console.Write("Select an option: ");
-    }
-
-    private static void ConvertJsonToClasses()
-    {
-        Console.Clear();
-        Console.WriteLine("=========================================");
-        Console.WriteLine("      Convert JSON to Classes");
-        Console.WriteLine("=========================================");
-
-        Console.WriteLine("Enter your JSON (or type 'back' to return to the main menu):");
-        string json = Console.ReadLine();
-
-        if (string.Equals(json, "back", StringComparison.OrdinalIgnoreCase))
-            return;
-
-        Console.WriteLine("\nSelect target languages (comma-separated numbers):");
-        foreach (var language in Enum.GetValues(typeof(Language)))
+        if (string.IsNullOrWhiteSpace(json))
         {
-            Console.WriteLine($"{(int)language}: {language}");
-        }
-
-        Console.Write("Enter your choices: ");
-        string[] languageChoices = Console.ReadLine()?.Split(',');
-
-        if (languageChoices == null || languageChoices.Length == 0)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("\nNo languages selected. Please try again.\n");
-            Console.ResetColor();
+            System.Console.ForegroundColor = ConsoleColor.Red;
+            System.Console.WriteLine("No JSON provided. Please try again.\n");
+            System.Console.ResetColor();
             return;
         }
 
-        Console.Clear();
-        Console.WriteLine("=========================================");
-        Console.WriteLine("      Generating Classes");
-        Console.WriteLine("=========================================");
-
-        foreach (string choice in languageChoices)
+        if (languages == null || languages.Length == 0)
         {
-            if (int.TryParse(choice.Trim(), out int languageChoice) && Enum.IsDefined(typeof(Language), languageChoice))
+            System.Console.ForegroundColor = ConsoleColor.Red;
+            System.Console.WriteLine("No languages selected. Please try again.\n");
+            System.Console.ResetColor();
+            return;
+        }
+
+        System.Console.Clear();
+        System.Console.WriteLine("=========================================");
+        System.Console.WriteLine("      Generating Classes");
+        System.Console.WriteLine("=========================================");
+
+        foreach (string choice in languages)
+        {
+            if (Enum.TryParse<Language>(choice.Trim(), true, out var selectedLanguage))
             {
-                var selectedLanguage = (Language)languageChoice;
                 try
                 {
                     string result = JsonClassConverter.ConvertTo(json, selectedLanguage);
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("========================================================");
-                    Console.WriteLine($"\n{selectedLanguage} Classes:\n");
-                    Console.WriteLine("========================================================");
-                    Console.ResetColor();
-                    Console.WriteLine(result);
+                    System.Console.ForegroundColor = ConsoleColor.Green;
+                    System.Console.WriteLine("========================================================");
+                    System.Console.WriteLine($"\n{selectedLanguage} Classes:\n");
+                    System.Console.WriteLine("========================================================");
+                    System.Console.ResetColor();
+                    System.Console.WriteLine(result);
                 }
                 catch (JsonException ex)
                 {
@@ -104,48 +83,45 @@ public class Program
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"\nInvalid language choice: {choice.Trim()}\n");
-                Console.ResetColor();
+                System.Console.ForegroundColor = ConsoleColor.Red;
+                System.Console.WriteLine($"\nInvalid language choice: {choice.Trim()}\n");
+                System.Console.ResetColor();
             }
         }
-        languageChoices = [];
-        Console.WriteLine("\nPress any key to return to the main menu...");
-        Console.ReadKey();
     }
 
     private static void DisplayHelp()
     {
-        Console.Clear();
-        Console.WriteLine("=========================================");
-        Console.WriteLine("               Help Menu");
-        Console.WriteLine("=========================================");
-        Console.WriteLine("1. Input a valid JSON string to generate classes.");
-        Console.WriteLine("2. Select one or more target languages by entering their corresponding numbers, separated by commas.");
-        Console.WriteLine("3. Supported languages include C#, Python, Java, JavaScript, TypeScript, PHP, Ruby, and Swift.");
-        Console.WriteLine("4. If an error occurs, ensure your JSON is valid and formatted correctly.");
-        Console.WriteLine("\nPress any key to return to the main menu...");
-        Console.ReadKey();
+        System.Console.Clear();
+        System.Console.WriteLine("=========================================");
+        System.Console.WriteLine("               Help Menu");
+        System.Console.WriteLine("=========================================");
+        System.Console.WriteLine("1. Input a valid JSON string to generate classes.");
+        System.Console.WriteLine("2. Select one or more target languages by entering their corresponding names, separated by commas.");
+        System.Console.WriteLine("3. Supported languages include C#, Python, Java, JavaScript, TypeScript, PHP, Ruby, and Swift.");
+        System.Console.WriteLine("4. If an error occurs, ensure your JSON is valid and formatted correctly.");
+        System.Console.WriteLine("\nPress any key to return to the main menu...");
+        System.Console.ReadKey();
     }
 
     private static void ExitApplication()
     {
-        Console.Clear();
-        Console.Write("Are you sure you want to exit? (y/n): ");
-        string confirmation = Console.ReadLine()?.Trim().ToLower();
+        System.Console.Clear();
+        System.Console.Write("Are you sure you want to exit? (y/n): ");
+        string confirmation = System.Console.ReadLine()?.Trim().ToLower();
 
         if (confirmation == "y" || confirmation == "yes")
         {
-            Console.WriteLine("\nThank you for using the converter. Goodbye!");
+            System.Console.WriteLine("\nThank you for using the converter. Goodbye!");
             Environment.Exit(0);
         }
     }
 
     private static void DisplayError(string title, string details)
     {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine($"\nError: {title}");
-        Console.WriteLine($"Details: {details}\n");
-        Console.ResetColor();
+        System.Console.ForegroundColor = ConsoleColor.Red;
+        System.Console.WriteLine($"\nError: {title}");
+        System.Console.WriteLine($"Details: {details}\n");
+        System.Console.ResetColor();
     }
 }
