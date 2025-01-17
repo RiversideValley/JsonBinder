@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
-namespace NoobNotFound.Json2Any.Configs;
+namespace Riverside.JsonBinder.Configs;
 
 public class JavaConfig : LanguageConfig
 {

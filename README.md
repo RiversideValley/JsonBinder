@@ -1,6 +1,6 @@
-## 🧩  NoobNotFound.Json2Any
+## 🧩  Riverside.JsonBinder
 
-NoobNotFound.Json2Any is a .NET based library that generates language-specific class representations from JSON input. It supports multiple programming languages. This was entirely created by AI.
+Riverside.JsonBinder is a .NET based library that generates language-specific class representations from JSON input. It supports multiple programming languages. This was entirely created by AI.
 
 ## ✨ Features
 
@@ -12,10 +12,10 @@ NoobNotFound.Json2Any is a .NET based library that generates language-specific c
 ## 🛠️ Usage
 
 ### 📚 Using the Library
-To use the library in your .NET 9 project, include the `NoobNotFound.Json2Any` namespace and call the static method `JsonClassConverter.ConvertTo`:
+To use the library in your .NET 9 project, include the `Riverside.JsonBinder` namespace and call the static method `JsonClassConverter.ConvertTo`:
 
 ```csharp
-using NoobNotFound.Json2Any;
+using Riverside.JsonBinder;
 
 string json = "{ \"Name\": \"John\", \"Age\": 30 }";
 string result = JsonClassConverter.ConvertTo(json, Language.CSharp);
@@ -58,7 +58,7 @@ The program will display the generated classes for the chosen languages in an or
 
 ## ⚖️ License
 
-This project, including the library `NoobNotFound.Json2Any`, is licensed under the **GNU General Public License v3.0**. You are free to use, modify, and distribute the software, provided you adhere to the terms of the license.
+This project, including the library `Riverside.JsonBinder`, is licensed under the **GNU General Public License v3.0**. You are free to use, modify, and distribute the software, provided you adhere to the terms of the license.
 
 ---
   

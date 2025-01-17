@@ -1,6 +1,6 @@
 ﻿
 using System.Text.Json;
-using NoobNotFound.Json2Any;
+using Riverside.JsonBinder;
 
 public class Program
 {

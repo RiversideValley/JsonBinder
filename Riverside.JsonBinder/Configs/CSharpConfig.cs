@@ -5,8 +5,9 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
-namespace NoobNotFound.Json2Any.Configs;
-public class RubyConfig : LanguageConfig
+namespace Riverside.JsonBinder.Configs;
+
+public class CSharpConfig : LanguageConfig
 {
     public override string GenerateClasses(JsonNode node, string className)
     {
@@ -19,8 +20,13 @@ public class RubyConfig : LanguageConfig
     {
         if (node is JsonObject obj)
         {
-            var classDef = $"class {className}\n    attr_accessor ";
-            classDef += string.Join(", ", obj.Select(property => $":{property.Key}"));
+            var classDef = $"public class {className}\n{{";
+            foreach (var property in obj)
+            {
+                var propType = GetType(property.Value, property.Key);
+                classDef += $"\n    public {propType} {property.Key} {{ get; set; }}";
+            }
+            classDef += "\n}";
             classes.Add(classDef);
 
             foreach (var property in obj)
@@ -33,7 +39,7 @@ public class RubyConfig : LanguageConfig
         }
         else if (node is JsonArray array)
         {
-            string elementType = "Object";
+            string elementType = "object";
             if (array.Count > 0)
             {
                 var firstElement = array[0];
@@ -44,7 +50,7 @@ public class RubyConfig : LanguageConfig
                     elementType = className + "Item";
                 }
             }
-            classes.Add($"class {className}\n    attr_accessor :items\n\n    def initialize\n        @items = []\n    end\nend");
+            classes.Add($"public class {className}\n{{\n    public List<{elementType}> Items {{ get; set; }} = new List<{elementType}>();\n}}");
         }
     }
 
@@ -52,13 +58,13 @@ public class RubyConfig : LanguageConfig
     {
         return node switch
         {
-            JsonObject => "Hash",
-            JsonArray => "Array",
-            JsonValue value when value.TryGetValue<int>(out _) => "Integer",
-            JsonValue value when value.TryGetValue<double>(out _) => "Float",
-            JsonValue value when value.TryGetValue<string>(out _) => "String",
-            JsonValue value when value.TryGetValue<bool>(out _) => "Boolean",
-            _ => "Object"
+            JsonObject => propertyName,
+            JsonArray => $"List<{propertyName}>",
+            JsonValue value when value.TryGetValue<int>(out _) => "int",
+            JsonValue value when value.TryGetValue<double>(out _) => "double",
+            JsonValue value when value.TryGetValue<string>(out _) => "string",
+            JsonValue value when value.TryGetValue<bool>(out _) => "bool",
+            _ => "object"
         };
     }
 }

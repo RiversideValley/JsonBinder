@@ -5,9 +5,10 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
-namespace NoobNotFound.Json2Any.Configs;
+namespace Riverside.JsonBinder.Configs;
 
-public class SwiftConfig : LanguageConfig
+
+public class PythonConfig : LanguageConfig
 {
     public override string GenerateClasses(JsonNode node, string className)
     {
@@ -20,13 +21,12 @@ public class SwiftConfig : LanguageConfig
     {
         if (node is JsonObject obj)
         {
-            var classDef = $"struct {className} {{";
+            var classDef = $"class {className}:\n    def __init__(self):";
             foreach (var property in obj)
             {
                 var propType = GetType(property.Value, property.Key);
-                classDef += $"\n    var {property.Key}: {propType}?";
+                classDef += $"\n        self.{property.Key}: {propType} = None";
             }
-            classDef += "\n}";
             classes.Add(classDef);
 
             foreach (var property in obj)
@@ -50,7 +50,7 @@ public class SwiftConfig : LanguageConfig
                     elementType = className + "Item";
                 }
             }
-            classes.Add($"struct {className} {{\n    var items: [{elementType}] = []\n}}");
+            classes.Add($"class {className}:\n    def __init__(self):\n        self.items: List[{elementType}] = []");
         }
     }
 
@@ -58,14 +58,13 @@ public class SwiftConfig : LanguageConfig
     {
         return node switch
         {
-            JsonObject => "[String: Any]",
-            JsonArray => "[Any]",
-            JsonValue value when value.TryGetValue<int>(out _) => "Int",
-            JsonValue value when value.TryGetValue<double>(out _) => "Double",
-            JsonValue value when value.TryGetValue<string>(out _) => "String",
-            JsonValue value when value.TryGetValue<bool>(out _) => "Bool",
+            JsonObject => "dict",
+            JsonArray => "list",
+            JsonValue value when value.TryGetValue<int>(out _) => "int",
+            JsonValue value when value.TryGetValue<double>(out _) => "float",
+            JsonValue value when value.TryGetValue<string>(out _) => "str",
+            JsonValue value when value.TryGetValue<bool>(out _) => "bool",
             _ => "Any"
         };
     }
 }
-

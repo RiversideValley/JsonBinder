@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NoobNotFound.Json2Any;
+namespace Riverside.JsonBinder;
 
 public enum Language
 {

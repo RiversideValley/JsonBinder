@@ -5,8 +5,9 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
-namespace NoobNotFound.Json2Any.Configs;
-public class TypeScriptConfig : LanguageConfig
+namespace Riverside.JsonBinder.Configs;
+
+public class JavaScriptConfig : LanguageConfig
 {
     public override string GenerateClasses(JsonNode node, string className)
     {
@@ -22,7 +23,6 @@ public class TypeScriptConfig : LanguageConfig
             var classDef = $"class {className} {{\n    constructor() {{";
             foreach (var property in obj)
             {
-                var propType = GetType(property.Value, property.Key);
                 classDef += $"\n        this.{property.Key} = null;";
             }
             classDef += "\n    }\n}";
@@ -46,11 +46,10 @@ public class TypeScriptConfig : LanguageConfig
                 if (firstElement is JsonObject || firstElement is JsonArray)
                 {
                     ProcessNode(firstElement, className + "Item", classes);
-                    elementType
- = className + "Item";
+                    elementType = className + "Item";
                 }
             }
-            classes.Add($"class {className} {{\n    items: {elementType}[];\n\n    constructor() {{\n        this.items = [];\n    }}\n}}");
+            classes.Add($"class {className} {{\n    constructor() {{\n        this.items = [];\n    }}\n}}");
         }
     }
 
@@ -58,8 +57,8 @@ public class TypeScriptConfig : LanguageConfig
     {
         return node switch
         {
-            JsonObject => propertyName,
-            JsonArray => $"{propertyName}[]",
+            JsonObject => "object",
+            JsonArray => "array",
             JsonValue value when value.TryGetValue<int>(out _) => "number",
             JsonValue value when value.TryGetValue<double>(out _) => "number",
             JsonValue value when value.TryGetValue<string>(out _) => "string",

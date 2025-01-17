@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using NoobNotFound.Json2Any.Configs;
+using Riverside.JsonBinder.Configs;
 
-namespace NoobNotFound.Json2Any;
+namespace Riverside.JsonBinder;
 public class JsonClassConverter
 {
     private static readonly Dictionary<Language, LanguageConfig> LanguageConfigs = new()

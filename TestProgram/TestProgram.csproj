@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NoobNotFound.Json2Any\NoobNotFound.Json2Any.csproj" />
+    <ProjectReference Include="..\Riverside.JsonBinder\Riverside.JsonBinder.csproj" />
   </ItemGroup>
 
 </Project>
