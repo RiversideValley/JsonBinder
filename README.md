@@ -1,8 +1,6 @@
-# 🧩 JSON to Classes Converter
+## 🧩  NoobNotFound.Json2Any
 
-## 🌟 Overview
-
-The JSON to Classes Converter is a command-line utility that generates language-specific class representations from JSON input. It supports multiple programming languages and allows users to select one or more target languages for the output.
+NoobNotFound.Json2Any is a .NET based library that generates language-specific class representations from JSON input. It supports multiple programming languages. This was entirely created by AI.
 
 ## ✨ Features
 
@@ -10,7 +8,6 @@ The JSON to Classes Converter is a command-line utility that generates language-
   - C#, Python, Java, JavaScript, TypeScript, PHP, Ruby, and Swift.
 - Multi-language selection for simultaneous generation.
 - User-friendly interface with detailed error handling.
-- 📖 Help menu for quick guidance.
 
 ## 🛠️ Usage
 
@@ -41,7 +38,7 @@ Supported languages include:
 
 You can use the output directly in your projects or customize it as needed.
 
-### 🚀 Running the Test Program
+## 🚀 Running the Test Program
 
 To see the library in action:
 
@@ -53,19 +50,18 @@ The program will display the generated classes for the chosen languages in an or
 
 - ❌ Invalid JSON displays an error in **red** and returns to the main menu.
 
-## 🔧 Development
 
 ### 📋 Requirements
 
 - .NET 9.0 or later.
 - Basic understanding of JSON and object-oriented programming.
 
-### ⚖️ License
+## ⚖️ License
 
 This project, including the library `NoobNotFound.Json2Any`, is licensed under the **GNU General Public License v3.0**. You are free to use, modify, and distribute the software, provided you adhere to the terms of the license.
 
-### 📝 Note
-
+---
+  
 ***Entirely crafted by AI magic.***  
 *GPT4o & Claude 3.5 Sonnet.*
 
