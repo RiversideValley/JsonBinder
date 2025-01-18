@@ -1,4 +1,4 @@
-﻿using Riverside.JsonBinder.Configs;
+﻿using Riverside.JsonBinder.Serialization;
 using System.Text.Json.Nodes;
 
 namespace Riverside.JsonBinder;
@@ -11,16 +11,16 @@ public class JsonClassConverter
 	/// <summary>
 	/// A dictionary mapping supported languages to their respective configurations.
 	/// </summary>
-	private static readonly Dictionary<Language, LanguageConfig> LanguageConfigs = new()
+	private static readonly Dictionary<Language, LanguageSerializer> LanguageConfigs = new()
 	{
-		{ Language.CSharp, new CSharpConfig() },
-		{ Language.Python, new PythonConfig() },
-		{ Language.Java, new JavaConfig() },
-		{ Language.JavaScript, new JavaScriptConfig() },
-		{ Language.TypeScript, new TypeScriptConfig() },
-		{ Language.PHP, new PHPConfig() },
-		{ Language.Ruby, new RubyConfig() },
-		{ Language.Swift, new SwiftConfig() }
+		{ Language.CSharp, new CSharpSerializer() },
+		{ Language.Python, new PythonSerializer() },
+		{ Language.Java, new JavaSerializer() },
+		{ Language.JavaScript, new JavaScriptSerializer() },
+		{ Language.TypeScript, new TypeScriptSerializer() },
+		{ Language.PHP, new PHPSerializer() },
+		{ Language.Ruby, new RubySerializer() },
+		{ Language.Swift, new SwiftSerializer() }
 	};
 
 	/// <summary>

@@ -1,18 +1,18 @@
 ﻿using System.Text.Json.Nodes;
 
-namespace Riverside.JsonBinder.Configs;
+namespace Riverside.JsonBinder.Serialization;
 
 /// <summary>
-/// Configuration for generating C# classes from JSON.
+/// Configuration for generating TypeScript classes from JSON.
 /// </summary>
-public class CSharpConfig : LanguageConfig
+public class TypeScriptSerializer : LanguageSerializer
 {
 	/// <summary>
-	/// Generates C# classes from the provided JSON node.
+	/// Generates TypeScript classes from the provided JSON node.
 	/// </summary>
 	/// <param name="node">The JSON node to convert.</param>
 	/// <param name="className">The name of the root class.</param>
-	/// <returns>A string containing the generated C# classes.</returns>
+	/// <returns>A string containing the generated TypeScript classes.</returns>
 	public override string GenerateClasses(JsonNode node, string className)
 	{
 		var classes = new List<string>();
@@ -21,7 +21,7 @@ public class CSharpConfig : LanguageConfig
 	}
 
 	/// <summary>
-	/// Processes a JSON node and generates the corresponding C# class definition.
+	/// Processes a JSON node and generates the corresponding TypeScript class definition.
 	/// </summary>
 	/// <param name="node">The JSON node to process.</param>
 	/// <param name="className">The name of the class to generate.</param>
@@ -30,13 +30,13 @@ public class CSharpConfig : LanguageConfig
 	{
 		if (node is JsonObject obj)
 		{
-			var classDef = $"public class {className}\n{{";
+			var classDef = $"class {className} {{\n    constructor() {{";
 			foreach (var property in obj)
 			{
 				var propType = GetType(property.Value, property.Key);
-				classDef += $"\n    public {propType} {property.Key} {{ get; set; }}";
+				classDef += $"\n        this.{property.Key} = null;";
 			}
-			classDef += "\n}";
+			classDef += "\n    }\n}";
 			classes.Add(classDef);
 
 			foreach (var property in obj)
@@ -49,7 +49,7 @@ public class CSharpConfig : LanguageConfig
 		}
 		else if (node is JsonArray array)
 		{
-			string elementType = "object";
+			string elementType = "any";
 			if (array.Count > 0)
 			{
 				var firstElement = array[0];
@@ -60,27 +60,27 @@ public class CSharpConfig : LanguageConfig
 					elementType = className + "Item";
 				}
 			}
-			classes.Add($"public class {className}\n{{\n    public List<{elementType}> Items {{ get; set; }} = new List<{elementType}>();\n}}");
+			classes.Add($"class {className} {{\n    items: {elementType}[];\n\n    constructor() {{\n        this.items = [];\n    }}\n}}");
 		}
 	}
 
 	/// <summary>
-	/// Gets the C# type for a given JSON node.
+	/// Gets the TypeScript type for a given JSON node.
 	/// </summary>
 	/// <param name="node">The JSON node to evaluate.</param>
 	/// <param name="propertyName">The name of the property.</param>
-	/// <returns>The C# type as a string.</returns>
+	/// <returns>The TypeScript type as a string.</returns>
 	public override string GetType(JsonNode? node, string propertyName)
 	{
 		return node switch
 		{
 			JsonObject => propertyName,
-			JsonArray => $"List<{propertyName}>",
-			JsonValue value when value.TryGetValue<int>(out _) => "int",
-			JsonValue value when value.TryGetValue<double>(out _) => "double",
+			JsonArray => $"{propertyName}[]",
+			JsonValue value when value.TryGetValue<int>(out _) => "number",
+			JsonValue value when value.TryGetValue<double>(out _) => "number",
 			JsonValue value when value.TryGetValue<string>(out _) => "string",
-			JsonValue value when value.TryGetValue<bool>(out _) => "bool",
-			_ => "object"
+			JsonValue value when value.TryGetValue<bool>(out _) => "boolean",
+			_ => "any"
 		};
 	}
 }

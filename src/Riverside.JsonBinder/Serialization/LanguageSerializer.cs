@@ -1,11 +1,11 @@
 ﻿using System.Text.Json.Nodes;
 
-namespace Riverside.JsonBinder.Configs;
+namespace Riverside.JsonBinder.Serialization;
 
 /// <summary>
 /// Abstract base class for language-specific configurations for generating classes from JSON.
 /// </summary>
-public abstract class LanguageConfig
+public abstract class LanguageSerializer
 {
 	/// <summary>
 	/// Generates classes from the provided JSON node.

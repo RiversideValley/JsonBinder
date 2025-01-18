@@ -1,18 +1,18 @@
 ﻿using System.Text.Json.Nodes;
 
-namespace Riverside.JsonBinder.Configs;
+namespace Riverside.JsonBinder.Serialization;
 
 /// <summary>
-/// Configuration for generating TypeScript classes from JSON.
+/// Configuration for generating JavaScript classes from JSON.
 /// </summary>
-public class TypeScriptConfig : LanguageConfig
+public class JavaScriptSerializer : LanguageSerializer
 {
 	/// <summary>
-	/// Generates TypeScript classes from the provided JSON node.
+	/// Generates JavaScript classes from the provided JSON node.
 	/// </summary>
 	/// <param name="node">The JSON node to convert.</param>
 	/// <param name="className">The name of the root class.</param>
-	/// <returns>A string containing the generated TypeScript classes.</returns>
+	/// <returns>A string containing the generated JavaScript classes.</returns>
 	public override string GenerateClasses(JsonNode node, string className)
 	{
 		var classes = new List<string>();
@@ -21,7 +21,7 @@ public class TypeScriptConfig : LanguageConfig
 	}
 
 	/// <summary>
-	/// Processes a JSON node and generates the corresponding TypeScript class definition.
+	/// Processes a JSON node and generates the corresponding JavaScript class definition.
 	/// </summary>
 	/// <param name="node">The JSON node to process.</param>
 	/// <param name="className">The name of the class to generate.</param>
@@ -33,7 +33,6 @@ public class TypeScriptConfig : LanguageConfig
 			var classDef = $"class {className} {{\n    constructor() {{";
 			foreach (var property in obj)
 			{
-				var propType = GetType(property.Value, property.Key);
 				classDef += $"\n        this.{property.Key} = null;";
 			}
 			classDef += "\n    }\n}";
@@ -60,22 +59,22 @@ public class TypeScriptConfig : LanguageConfig
 					elementType = className + "Item";
 				}
 			}
-			classes.Add($"class {className} {{\n    items: {elementType}[];\n\n    constructor() {{\n        this.items = [];\n    }}\n}}");
+			classes.Add($"class {className} {{\n    constructor() {{\n        this.items = [];\n    }}\n}}");
 		}
 	}
 
 	/// <summary>
-	/// Gets the TypeScript type for a given JSON node.
+	/// Gets the JavaScript type for a given JSON node.
 	/// </summary>
 	/// <param name="node">The JSON node to evaluate.</param>
 	/// <param name="propertyName">The name of the property.</param>
-	/// <returns>The TypeScript type as a string.</returns>
+	/// <returns>The JavaScript type as a string.</returns>
 	public override string GetType(JsonNode? node, string propertyName)
 	{
 		return node switch
 		{
-			JsonObject => propertyName,
-			JsonArray => $"{propertyName}[]",
+			JsonObject => "object",
+			JsonArray => "array",
 			JsonValue value when value.TryGetValue<int>(out _) => "number",
 			JsonValue value when value.TryGetValue<double>(out _) => "number",
 			JsonValue value when value.TryGetValue<string>(out _) => "string",
