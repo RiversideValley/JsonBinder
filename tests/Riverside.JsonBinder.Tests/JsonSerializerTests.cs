@@ -1,9 +1,4 @@
-﻿using System.Linq.Expressions;
-using System.Text.Json;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Riverside.JsonBinder;
-
-namespace Riverside.JsonBinder.Tests;
+﻿namespace Riverside.JsonBinder.Tests;
 
 [TestClass]
 public class JsonSerializerTests
