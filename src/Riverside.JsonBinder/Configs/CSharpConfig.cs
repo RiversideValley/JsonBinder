@@ -2,8 +2,17 @@
 
 namespace Riverside.JsonBinder.Configs;
 
+/// <summary>
+/// Configuration for generating C# classes from JSON.
+/// </summary>
 public class CSharpConfig : LanguageConfig
 {
+	/// <summary>
+	/// Generates C# classes from the provided JSON node.
+	/// </summary>
+	/// <param name="node">The JSON node to convert.</param>
+	/// <param name="className">The name of the root class.</param>
+	/// <returns>A string containing the generated C# classes.</returns>
 	public override string GenerateClasses(JsonNode node, string className)
 	{
 		var classes = new List<string>();
@@ -11,6 +20,12 @@ public class CSharpConfig : LanguageConfig
 		return string.Join("\n\n", classes);
 	}
 
+	/// <summary>
+	/// Processes a JSON node and generates the corresponding C# class definition.
+	/// </summary>
+	/// <param name="node">The JSON node to process.</param>
+	/// <param name="className">The name of the class to generate.</param>
+	/// <param name="classes">The list of generated class definitions.</param>
 	private void ProcessNode(JsonNode node, string className, List<string> classes)
 	{
 		if (node is JsonObject obj)
@@ -49,6 +64,12 @@ public class CSharpConfig : LanguageConfig
 		}
 	}
 
+	/// <summary>
+	/// Gets the C# type for a given JSON node.
+	/// </summary>
+	/// <param name="node">The JSON node to evaluate.</param>
+	/// <param name="propertyName">The name of the property.</param>
+	/// <returns>The C# type as a string.</returns>
 	public override string GetType(JsonNode? node, string propertyName)
 	{
 		return node switch
