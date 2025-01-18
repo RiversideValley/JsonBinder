@@ -60,7 +60,7 @@ public class Program
 
 		foreach (string choice in languages)
 		{
-			if (Enum.TryParse<Language>(choice.Trim(), true, out var selectedLanguage))
+			if (Enum.TryParse<SerializableLanguage>(choice.Trim(), true, out var selectedLanguage))
 			{
 				try
 				{

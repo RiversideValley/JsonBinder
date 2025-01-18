@@ -11,16 +11,16 @@ public class JsonClassConverter
 	/// <summary>
 	/// A dictionary mapping supported languages to their respective configurations.
 	/// </summary>
-	private static readonly Dictionary<Language, LanguageSerializer> LanguageConfigs = new()
+	private static readonly Dictionary<SerializableLanguage, LanguageSerializer> LanguageConfigs = new()
 	{
-		{ Language.CSharp, new CSharpSerializer() },
-		{ Language.Python, new PythonSerializer() },
-		{ Language.Java, new JavaSerializer() },
-		{ Language.JavaScript, new JavaScriptSerializer() },
-		{ Language.TypeScript, new TypeScriptSerializer() },
-		{ Language.PHP, new PHPSerializer() },
-		{ Language.Ruby, new RubySerializer() },
-		{ Language.Swift, new SwiftSerializer() }
+		{ SerializableLanguage.CSharp, new CSharpSerializer() },
+		{ SerializableLanguage.Python, new PythonSerializer() },
+		{ SerializableLanguage.Java, new JavaSerializer() },
+		{ SerializableLanguage.JavaScript, new JavaScriptSerializer() },
+		{ SerializableLanguage.TypeScript, new TypeScriptSerializer() },
+		{ SerializableLanguage.PHP, new PHPSerializer() },
+		{ SerializableLanguage.Ruby, new RubySerializer() },
+		{ SerializableLanguage.Swift, new SwiftSerializer() }
 	};
 
 	/// <summary>
@@ -31,7 +31,7 @@ public class JsonClassConverter
 	/// <returns>A string containing the generated classes.</returns>
 	/// <exception cref="ArgumentException">Thrown when the JSON input is invalid.</exception>
 	/// <exception cref="NotSupportedException">Thrown when the specified language is not supported.</exception>
-	public static string ConvertTo(string json, Language language)
+	public static string ConvertTo(string json, SerializableLanguage language)
 	{
 		try
 		{

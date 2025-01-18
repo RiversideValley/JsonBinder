@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents the supported programming languages for JSON to class conversion.
 /// </summary>
-public enum Language
+public enum SerializableLanguage
 {
 	/// <summary>
 	/// C# programming language.
