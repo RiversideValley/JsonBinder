@@ -34,4 +34,16 @@ public static class ConsoleHelpers
 		System.Console.WriteLine("\nPress any key to continue...");
 		System.Console.ReadKey();
 	}
+
+	/// <summary>
+	/// Confirms if the user wants to exit the application.
+	/// </summary>
+	/// <returns>True if the user confirms exit, false otherwise.</returns>
+	public static bool ConfirmExit()
+	{
+		System.Console.Clear();
+		System.Console.Write("Are you sure you want to exit? (y/n): ");
+		string? confirmation = System.Console.ReadLine()?.Trim().ToLower();
+		return confirmation == "y" || confirmation == "yes";
+	}
 }
