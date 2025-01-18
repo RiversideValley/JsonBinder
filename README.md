@@ -1,6 +1,6 @@
-# 🧩  Riverside.JsonBinder
+# 🧩  `Riverside.JsonBinder`
 
-Riverside.JsonBinder is a .NET based library that generates language-specific class representations from JSON input. It supports multiple programming languages. This was entirely created by AI.
+`Riverside.JsonBinder` is a .NET based library that generates language-specific class representations from JSON input. It supports multiple programming languages.
 
 ## ✨ Features
 
@@ -13,31 +13,31 @@ Riverside.JsonBinder is a .NET based library that generates language-specific cl
 
 ### 📚 Using the Library
 
-To use the library in your .NET project, include the `Riverside.JsonBinder` namespace and call the static method `JsonClassConverter.ConvertTo`:
+To use the library in your .NET project, include the `Riverside.JsonBinder` namespace and call the static method `JsonSerializer.ConvertTo`:
 
 ```csharp
 using Riverside.JsonBinder;
 
 string json = "{ \"Name\": \"John\", \"Age\": 30 }";
-string result = JsonClassConverter.ConvertTo(json, Language.CSharp);
+string result = JsonSerializer.ConvertTo(json, SerializableLanguage.CSharp);
 Console.WriteLine(result);
 ```
 
 This method takes two parameters:
 
 1. `json`: A string containing the JSON input.
-2. `language`: An enum specifying the target language.
+2. `language`: An enum specifying the target SerializableLanguage
 
 Supported languages include:
 
-- `Language.CSharp`
-- `Language.Python`
-- `Language.Java`
-- `Language.JavaScript`
-- `Language.TypeScript`
-- `Language.PHP`
-- `Language.Ruby`
-- `Language.Swift`
+- `SerializableLanguage.CSharp`
+- `SerializableLanguage.Python`
+- `SerializableLanguage.Java`
+- `SerializableLanguage.JavaScript`
+- `SerializableLanguage.TypeScript`
+- `SerializableLanguage.PHP`
+- `SerializableLanguage.Ruby`
+- `SerializableLanguage.Swift`
 
 You can use the output directly in your projects or customize it as needed.
 
@@ -64,5 +64,5 @@ This project, including the library `Riverside.JsonBinder`, is licensed under th
 
 ---
   
-***Entirely crafted by AI magic.***  
+***Crafted with the help of AI magic.***  
 *GPT4o & Claude 3.5 Sonnet.*
