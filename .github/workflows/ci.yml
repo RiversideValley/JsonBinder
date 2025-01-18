@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        target-framework: [ 'net9.0', 'net8.0', 'netstandard2.0', 'netstandard2.1', 'net481' ]
+        configuration: [ 'Debug', 'Release' ]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore --framework ${{ matrix.target-framework }}
+
+    - name: Build
+      if: matrix.os == 'windows-latest' || (matrix.os == 'ubuntu-latest' && matrix.target-framework != 'net481')
+      run: dotnet build --framework ${{ matrix.target-framework }} --configuration ${{ matrix.configuration }} --no-restore
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    strategy:
+      matrix:
+        target-framework: [ 'net9.0', 'net8.0', 'netstandard2.0', 'netstandard2.1' ]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Test
+      run: dotnet test --framework ${{ matrix.target-framework }} --configuration Release --no-build --verbosity normal
