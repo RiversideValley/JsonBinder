@@ -46,7 +46,7 @@ You can use the output directly in your projects or customize it as needed.
 To see the library in action:
 
 1. Compile the solution using .NET 9.
-2. Run the `TestProgram` project.
+2. Run the `Riverside.JsonBinder.Console` project.
 3. Use the interactive menu to input JSON and select target languages.
 
 The program will display the generated classes for the chosen languages in an organized format.
