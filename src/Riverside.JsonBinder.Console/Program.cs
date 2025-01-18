@@ -1,4 +1,4 @@
-﻿using System.CommandLine;
+using System.CommandLine;
 using System.Text.Json;
 using System.CommandLine.NamingConventionBinder;
 using Riverside.JsonBinder;
@@ -33,17 +33,13 @@ public class Program
     {
         if (string.IsNullOrWhiteSpace(json))
         {
-            System.Console.ForegroundColor = ConsoleColor.Red;
-            System.Console.WriteLine("No JSON provided. Please try again.\n");
-            System.Console.ResetColor();
+            DisplayRedMessage("No JSON provided. Please try again.\n");
             return;
         }
 
         if (languages == null || languages.Length == 0)
         {
-            System.Console.ForegroundColor = ConsoleColor.Red;
-            System.Console.WriteLine("No languages selected. Please try again.\n");
-            System.Console.ResetColor();
+            DisplayRedMessage("No languages selected. Please try again.\n");
             return;
         }
 
@@ -77,9 +73,7 @@ public class Program
             }
             else
             {
-                System.Console.ForegroundColor = ConsoleColor.Red;
-                System.Console.WriteLine($"\nInvalid language choice: {choice.Trim()}\n");
-                System.Console.ResetColor();
+                DisplayRedMessage($"\nInvalid language choice: {choice.Trim()}\n");
             }
         }
     }
@@ -100,9 +94,15 @@ public class Program
 
     private static void DisplayError(string title, string details)
     {
+        DisplayRedMessage($"\nError: {title}", false);
+        DisplayRedMessage($"Details: {details}\n");
+    }
+
+    private static void DisplayRedMessage(string message, bool? colorResets = true)
+    {
         System.Console.ForegroundColor = ConsoleColor.Red;
-        System.Console.WriteLine($"\nError: {title}");
-        System.Console.WriteLine($"Details: {details}\n");
-        System.Console.ResetColor();
+        System.Console.WriteLine(message);
+        if (colorResets is true)
+            System.Console.ResetColor();
     }
 }
