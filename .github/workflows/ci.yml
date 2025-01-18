@@ -33,9 +33,14 @@ jobs:
 
   test:
     name: Test
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     needs: build
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        configuration: [ 'Release' ]
 
     steps:
     - name: Checkout code
