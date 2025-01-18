@@ -5,7 +5,28 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackAsTool>True</PackAsTool>
+    <ToolCommandName>jsonbinder</ToolCommandName>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>Json2Any</Title>
+    <Company>Riverside Valley Corporation</Company>
+    <Description>Convert JSON to any language!</Description>
+    <Copyright>Copyright (c) Riverside Valley Corporation</Copyright>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>PackageLogo.png</PackageIcon>
+    <PackageTags>json; console; csharp; parser; json-parser; riverside</PackageTags>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\Riverside.JsonBinder\Assets\PackageLogo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
