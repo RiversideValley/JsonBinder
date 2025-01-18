@@ -6,7 +6,7 @@
 		<Authors>Riverside, Lamparter</Authors>
 		<Copyright>Copyright (c) Riverside Valley Corporation</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<RepositoryUrl>https://github.com/Lamparter/Rosetta</RepositoryUrl>
+		<RepositoryUrl>https://github.com/RiversideValley/JsonBinder</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>json; console; csharp; parser; json-parser; riverside</PackageTags>
 		<Company>Riverside Valley Corporation</Company>
