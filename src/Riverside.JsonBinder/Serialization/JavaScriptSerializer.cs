@@ -26,40 +26,50 @@ public class JavaScriptSerializer : LanguageSerializer
 	/// <param name="node">The JSON node to process.</param>
 	/// <param name="className">The name of the class to generate.</param>
 	/// <param name="classes">The list of generated class definitions.</param>
+
 	private void ProcessNode(JsonNode node, string className, List<string> classes)
 	{
 		if (node is JsonObject obj)
 		{
-			var classDef = $"class {className} {{\n    constructor() {{";
+			var classDef = $"class {className} {{";
+			var constructorAssignments = new List<string>();
+
 			foreach (var property in obj)
 			{
-				classDef += $"\n        this.{property.Key} = null;";
+				constructorAssignments.Add($"        this.{property.Key} = null;");
 			}
-			classDef += "\n    }\n}";
+
+			classDef += "\n    constructor() {";
+			classDef += "\n" + string.Join("\n", constructorAssignments);
+			classDef += "\n    }";
+
+			// Add JSDoc comments for better IDE support
+			classDef += "\n\n    /**";
+			foreach (var property in obj)
+			{
+				var propType = GetType(property.Value, className);
+				classDef += $"\n     * @type {{{propType}}}";
+			}
+			classDef += "\n     */";
+
+			classDef += "\n}";
 			classes.Add(classDef);
 
 			foreach (var property in obj)
 			{
 				if (property.Value is JsonObject || property.Value is JsonArray)
 				{
-					ProcessNode(property.Value, property.Key, classes);
+					ProcessNode(property.Value, ToPascalCase(property.Key), classes);
 				}
 			}
 		}
-		else if (node is JsonArray array)
+		else if (node is JsonArray array && array.Count > 0)
 		{
-			string elementType = "any";
-			if (array.Count > 0)
+			var firstElement = array[0];
+			if (firstElement is JsonObject || firstElement is JsonArray)
 			{
-				var firstElement = array[0];
-				elementType = GetType(firstElement, className);
-				if (firstElement is JsonObject || firstElement is JsonArray)
-				{
-					ProcessNode(firstElement, className + "Item", classes);
-					elementType = className + "Item";
-				}
+				ProcessNode(firstElement, className + "Item", classes);
 			}
-			classes.Add($"class {className} {{\n    constructor() {{\n        this.items = [];\n    }}\n}}");
 		}
 	}
 
@@ -73,13 +83,13 @@ public class JavaScriptSerializer : LanguageSerializer
 	{
 		return node switch
 		{
-			JsonObject => "object",
-			JsonArray => "array",
+			JsonObject => propertyName,
+			JsonArray => $"Array<{propertyName}Item>",
 			JsonValue value when value.TryGetValue<int>(out _) => "number",
 			JsonValue value when value.TryGetValue<double>(out _) => "number",
 			JsonValue value when value.TryGetValue<string>(out _) => "string",
 			JsonValue value when value.TryGetValue<bool>(out _) => "boolean",
-			_ => "any"
+			_ => "*"
 		};
 	}
 }

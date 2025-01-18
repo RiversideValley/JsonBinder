@@ -30,35 +30,50 @@ public class RubySerializer : LanguageSerializer
 	{
 		if (node is JsonObject obj)
 		{
-			var classDef = $"class {className}\n    attr_accessor ";
-			classDef += string.Join(", ", obj.Select(property => $":{property.Key}"));
+			var classDef = $"class {className}";
+			var properties = new List<string>();
+			var typeSignatures = new List<string>();
+
+			// Add type signatures using Ruby 3 syntax
+			foreach (var property in obj)
+			{
+				var propType = GetType(property.Value, ToPascalCase(property.Key));
+				typeSignatures.Add($"    sig {{ returns({propType}).nilable }}");
+				properties.Add($"    attr_accessor :{property.Key}");
+			}
+
+			// Add initialize method
+			var initMethod = "    def initialize\n";
+			foreach (var property in obj)
+			{
+				initMethod += $"        @{property.Key} = nil\n";
+			}
+			initMethod += "    end";
+
+			classDef += "\n    extend T::Sig\n\n";
+			classDef += string.Join("\n", typeSignatures) + "\n\n";
+			classDef += string.Join("\n", properties) + "\n\n";
+			classDef += initMethod + "\nend";
+
 			classes.Add(classDef);
 
 			foreach (var property in obj)
 			{
 				if (property.Value is JsonObject || property.Value is JsonArray)
 				{
-					ProcessNode(property.Value, property.Key, classes);
+					ProcessNode(property.Value, ToPascalCase(property.Key), classes);
 				}
 			}
 		}
-		else if (node is JsonArray array)
+		else if (node is JsonArray array && array.Count > 0)
 		{
-			string elementType = "Object";
-			if (array.Count > 0)
+			var firstElement = array[0];
+			if (firstElement is JsonObject || firstElement is JsonArray)
 			{
-				var firstElement = array[0];
-				elementType = GetType(firstElement, className);
-				if (firstElement is JsonObject || firstElement is JsonArray)
-				{
-					ProcessNode(firstElement, className + "Item", classes);
-					elementType = className + "Item";
-				}
+				ProcessNode(firstElement, className + "Item", classes);
 			}
-			classes.Add($"class {className}\n    attr_accessor :items\n\n    def initialize\n        @items = []\n    end\nend");
 		}
 	}
-
 	/// <summary>
 	/// Gets the Ruby type for a given JSON node.
 	/// </summary>
@@ -69,13 +84,13 @@ public class RubySerializer : LanguageSerializer
 	{
 		return node switch
 		{
-			JsonObject => "Hash",
-			JsonArray => "Array",
+			JsonObject => propertyName,
+			JsonArray => $"T::Array[{propertyName}Item]",
 			JsonValue value when value.TryGetValue<int>(out _) => "Integer",
 			JsonValue value when value.TryGetValue<double>(out _) => "Float",
 			JsonValue value when value.TryGetValue<string>(out _) => "String",
-			JsonValue value when value.TryGetValue<bool>(out _) => "Boolean",
-			_ => "Object"
+			JsonValue value when value.TryGetValue<bool>(out _) => "T::Boolean",
+			_ => "T.untyped"
 		};
 	}
 }

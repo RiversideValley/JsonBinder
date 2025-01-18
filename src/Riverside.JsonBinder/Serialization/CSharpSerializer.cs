@@ -33,8 +33,8 @@ public class CSharpSerializer : LanguageSerializer
 			var classDef = $"public class {className}\n{{";
 			foreach (var property in obj)
 			{
-				var propType = GetType(property.Value, property.Key);
-				classDef += $"\n    public {propType} {property.Key} {{ get; set; }}";
+				var propType = GetType(property.Value, ToPascalCase(property.Key));
+				classDef += $"\n    public {propType} {ToPascalCase(property.Key)} {{ get; set; }}";
 			}
 			classDef += "\n}";
 			classes.Add(classDef);
@@ -43,24 +43,17 @@ public class CSharpSerializer : LanguageSerializer
 			{
 				if (property.Value is JsonObject || property.Value is JsonArray)
 				{
-					ProcessNode(property.Value, property.Key, classes);
+					ProcessNode(property.Value, ToPascalCase(property.Key), classes);
 				}
 			}
 		}
-		else if (node is JsonArray array)
+		else if (node is JsonArray array && array.Count > 0)
 		{
-			string elementType = "object";
-			if (array.Count > 0)
+			var firstElement = array[0];
+			if (firstElement is JsonObject || firstElement is JsonArray)
 			{
-				var firstElement = array[0];
-				elementType = GetType(firstElement, className);
-				if (firstElement is JsonObject || firstElement is JsonArray)
-				{
-					ProcessNode(firstElement, className + "Item", classes);
-					elementType = className + "Item";
-				}
+				ProcessNode(firstElement, className + "Item", classes);
 			}
-			classes.Add($"public class {className}\n{{\n    public List<{elementType}> Items {{ get; set; }} = new List<{elementType}>();\n}}");
 		}
 	}
 
@@ -75,7 +68,7 @@ public class CSharpSerializer : LanguageSerializer
 		return node switch
 		{
 			JsonObject => propertyName,
-			JsonArray => $"List<{propertyName}>",
+			JsonArray => $"List<{propertyName}Item>",
 			JsonValue value when value.TryGetValue<int>(out _) => "int",
 			JsonValue value when value.TryGetValue<double>(out _) => "double",
 			JsonValue value when value.TryGetValue<string>(out _) => "string",

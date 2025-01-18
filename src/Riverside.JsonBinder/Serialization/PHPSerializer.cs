@@ -30,36 +30,42 @@ public class PHPSerializer : LanguageSerializer
 	{
 		if (node is JsonObject obj)
 		{
-			var classDef = $"class {className} {{\n";
+			var classDef = $"class {className}\n{{";
+			var properties = new List<string>();
+			var methods = new List<string>();
+
 			foreach (var property in obj)
 			{
-				classDef += $"\n    public ${property.Key};";
+				var propName = property.Key;
+				var propType = GetType(property.Value, className);
+				properties.Add($"    private {propType} ${propName};");
+
+				var pascalPropName = ToPascalCase(propName);
+				methods.Add($"    public function get{pascalPropName}() {{ return $this->{propName}; }}");
+				methods.Add($"    public function set{pascalPropName}({propType} ${propName}) {{ $this->{propName} = ${propName}; }}");
 			}
+
+			classDef += "\n" + string.Join("\n", properties);
+			classDef += "\n\n" + string.Join("\n", methods);
 			classDef += "\n}";
+
 			classes.Add(classDef);
 
 			foreach (var property in obj)
 			{
 				if (property.Value is JsonObject || property.Value is JsonArray)
 				{
-					ProcessNode(property.Value, property.Key, classes);
+					ProcessNode(property.Value, ToPascalCase(property.Key), classes);
 				}
 			}
 		}
-		else if (node is JsonArray array)
+		else if (node is JsonArray array && array.Count > 0)
 		{
-			string elementType = "mixed";
-			if (array.Count > 0)
+			var firstElement = array[0];
+			if (firstElement is JsonObject || firstElement is JsonArray)
 			{
-				var firstElement = array[0];
-				elementType = GetType(firstElement, className);
-				if (firstElement is JsonObject || firstElement is JsonArray)
-				{
-					ProcessNode(firstElement, className + "Item", classes);
-					elementType = className + "Item";
-				}
+				ProcessNode(firstElement, className + "Item", classes);
 			}
-			classes.Add($"class {className} {{\n    public array ${className} = [];\n}}");
 		}
 	}
 
@@ -73,13 +79,13 @@ public class PHPSerializer : LanguageSerializer
 	{
 		return node switch
 		{
-			JsonObject => "object",
-			JsonArray => "array",
+			JsonObject => propertyName,
+			JsonArray => "array",  // PHP 7+ type hint
 			JsonValue value when value.TryGetValue<int>(out _) => "int",
 			JsonValue value when value.TryGetValue<double>(out _) => "float",
 			JsonValue value when value.TryGetValue<string>(out _) => "string",
 			JsonValue value when value.TryGetValue<bool>(out _) => "bool",
-			_ => "mixed"
+			_ => "mixed"  // PHP 8+ type hint
 		};
 	}
 }

@@ -30,37 +30,39 @@ public class TypeScriptSerializer : LanguageSerializer
 	{
 		if (node is JsonObject obj)
 		{
-			var classDef = $"class {className} {{\n    constructor() {{";
+			var classDef = $"export class {className} {{";
+			var properties = new List<string>();
+			var constructorAssignments = new List<string>();
+
 			foreach (var property in obj)
 			{
-				var propType = GetType(property.Value, property.Key);
-				classDef += $"\n        this.{property.Key} = null;";
+				var propType = GetType(property.Value, ToPascalCase(property.Key));
+				properties.Add($"    {property.Key}: {propType};");
+				constructorAssignments.Add($"        this.{property.Key} = null;");
 			}
+
+			classDef += "\n" + string.Join("\n", properties);
+			classDef += "\n\n    constructor() {";
+			classDef += "\n" + string.Join("\n", constructorAssignments);
 			classDef += "\n    }\n}";
+
 			classes.Add(classDef);
 
 			foreach (var property in obj)
 			{
 				if (property.Value is JsonObject || property.Value is JsonArray)
 				{
-					ProcessNode(property.Value, property.Key, classes);
+					ProcessNode(property.Value, ToPascalCase(property.Key), classes);
 				}
 			}
 		}
-		else if (node is JsonArray array)
+		else if (node is JsonArray array && array.Count > 0)
 		{
-			string elementType = "any";
-			if (array.Count > 0)
+			var firstElement = array[0];
+			if (firstElement is JsonObject || firstElement is JsonArray)
 			{
-				var firstElement = array[0];
-				elementType = GetType(firstElement, className);
-				if (firstElement is JsonObject || firstElement is JsonArray)
-				{
-					ProcessNode(firstElement, className + "Item", classes);
-					elementType = className + "Item";
-				}
+				ProcessNode(firstElement, className + "Item", classes);
 			}
-			classes.Add($"class {className} {{\n    items: {elementType}[];\n\n    constructor() {{\n        this.items = [];\n    }}\n}}");
 		}
 	}
 
@@ -75,7 +77,7 @@ public class TypeScriptSerializer : LanguageSerializer
 		return node switch
 		{
 			JsonObject => propertyName,
-			JsonArray => $"{propertyName}[]",
+			JsonArray => $"{propertyName}Item[]",
 			JsonValue value when value.TryGetValue<int>(out _) => "number",
 			JsonValue value when value.TryGetValue<double>(out _) => "number",
 			JsonValue value when value.TryGetValue<string>(out _) => "string",

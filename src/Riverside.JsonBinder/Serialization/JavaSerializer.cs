@@ -31,38 +31,37 @@ public class JavaSerializer : LanguageSerializer
 		if (node is JsonObject obj)
 		{
 			var classDef = $"public class {className} {{";
+			var fields = new List<string>();
+			var methods = new List<string>();
+
 			foreach (var property in obj)
 			{
-				var propType = GetType(property.Value, property.Key);
-				classDef += $"\n    private {propType} {property.Key};";
-				classDef += $"\n    public {propType} get{property.Key}() {{ return {property.Key}; }}";
-				classDef += $"\n    public void set{property.Key}({propType} {property.Key}) {{ this.{property.Key} = {property.Key}; }}";
+				var propName = ToPascalCase(property.Key);
+				var propType = GetType(property.Value, propName);
+
+				fields.Add($"    private {propType} {property.Key};");
+				methods.Add($"    public {propType} get{propName}() {{ return {property.Key}; }}");
+				methods.Add($"    public void set{propName}({propType} {property.Key}) {{ this.{property.Key} = {property.Key}; }}");
 			}
-			classDef += "\n}";
+
+			classDef += "\n" + string.Join("\n", fields) + "\n\n" + string.Join("\n", methods) + "\n}";
 			classes.Add(classDef);
 
 			foreach (var property in obj)
 			{
 				if (property.Value is JsonObject || property.Value is JsonArray)
 				{
-					ProcessNode(property.Value, property.Key, classes);
+					ProcessNode(property.Value, ToPascalCase(property.Key), classes);
 				}
 			}
 		}
-		else if (node is JsonArray array)
+		else if (node is JsonArray array && array.Count > 0)
 		{
-			string elementType = "Object";
-			if (array.Count > 0)
+			var firstElement = array[0];
+			if (firstElement is JsonObject || firstElement is JsonArray)
 			{
-				var firstElement = array[0];
-				elementType = GetType(firstElement, className);
-				if (firstElement is JsonObject || firstElement is JsonArray)
-				{
-					ProcessNode(firstElement, className + "Item", classes);
-					elementType = className + "Item";
-				}
+				ProcessNode(firstElement, className + "Item", classes);
 			}
-			classes.Add($"public class {className} {{\n    private List<{elementType}> items;\n    public List<{elementType}> getItems() {{ return items; }}\n    public void setItems(List<{elementType}> items) {{ this.items = items; }}\n}}");
 		}
 	}
 
@@ -77,7 +76,7 @@ public class JavaSerializer : LanguageSerializer
 		return node switch
 		{
 			JsonObject => propertyName,
-			JsonArray => $"List<{propertyName}>",
+			JsonArray => $"List<{propertyName}Item>",
 			JsonValue value when value.TryGetValue<int>(out _) => "int",
 			JsonValue value when value.TryGetValue<double>(out _) => "double",
 			JsonValue value when value.TryGetValue<string>(out _) => "String",

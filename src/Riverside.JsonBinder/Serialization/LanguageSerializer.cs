@@ -22,4 +22,17 @@ public abstract class LanguageSerializer
 	/// <param name="propertyName">The name of the property.</param>
 	/// <returns>The type as a string.</returns>
 	public abstract string GetType(JsonNode? node, string propertyName);
+	public string ToPascalCase(string input)
+	{
+		if (string.IsNullOrEmpty(input))
+		{
+			return input;
+		}
+
+		// Split the input into words using non-alphanumeric characters as delimiters.
+		var words = input.Split(new[] { '_', '-', ' ', '.' }, StringSplitOptions.RemoveEmptyEntries);
+
+		// Capitalize the first letter of each word and join them.
+		return string.Concat(words.Select(word => char.ToUpper(word[0]) + word.Substring(1).ToLower()));
+	}
 }

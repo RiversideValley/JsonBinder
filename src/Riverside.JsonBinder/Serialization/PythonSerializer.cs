@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Nodes;
+﻿using System.Linq;
+using System.Text.Json.Nodes;
 
 namespace Riverside.JsonBinder.Serialization;
 
@@ -26,42 +27,44 @@ public class PythonSerializer : LanguageSerializer
 	/// <param name="node">The JSON node to process.</param>
 	/// <param name="className">The name of the class to generate.</param>
 	/// <param name="classes">The list of generated class definitions.</param>
+	/// 
+
 	private void ProcessNode(JsonNode node, string className, List<string> classes)
 	{
 		if (node is JsonObject obj)
 		{
-			var classDef = $"class {className}:\n    def __init__(self):";
+			var classDef = $"class {className}:";
+			var initDef = "    def __init__(self):";
+			var annotations = new List<string>();
+
 			foreach (var property in obj)
 			{
-				var propType = GetType(property.Value, property.Key);
-				classDef += $"\n        self.{property.Key}: {propType} = None";
+				var propName = property.Key.ToLower();
+				var propType = GetType(property.Value, className);
+				annotations.Add($"    {propName}: Optional[{propType}]");
+				initDef += $"\n        self.{propName}: Optional[{propType}] = None";
 			}
-			classes.Add(classDef);
+
+			classes.Add($"{classDef}\n{string.Join("\n", annotations)}\n\n{initDef}");
 
 			foreach (var property in obj)
 			{
 				if (property.Value is JsonObject || property.Value is JsonArray)
 				{
-					ProcessNode(property.Value, property.Key, classes);
+					ProcessNode(property.Value, ToPascalCase(property.Key), classes);
 				}
 			}
 		}
-		else if (node is JsonArray array)
+		else if (node is JsonArray array && array.Count > 0)
 		{
-			string elementType = "Any";
-			if (array.Count > 0)
+			var firstElement = array[0];
+			if (firstElement is JsonObject || firstElement is JsonArray)
 			{
-				var firstElement = array[0];
-				elementType = GetType(firstElement, className);
-				if (firstElement is JsonObject || firstElement is JsonArray)
-				{
-					ProcessNode(firstElement, className + "Item", classes);
-					elementType = className + "Item";
-				}
+				ProcessNode(firstElement, className + "Item", classes);
 			}
-			classes.Add($"class {className}:\n    def __init__(self):\n        self.items: List[{elementType}] = []");
 		}
 	}
+
 
 	/// <summary>
 	/// Gets the Python type for a given JSON node.
@@ -73,13 +76,13 @@ public class PythonSerializer : LanguageSerializer
 	{
 		return node switch
 		{
-			JsonObject => "dict",
-			JsonArray => "list",
+			JsonObject => propertyName,
+			JsonArray => $"List[{propertyName}Item]",
 			JsonValue value when value.TryGetValue<int>(out _) => "int",
 			JsonValue value when value.TryGetValue<double>(out _) => "float",
 			JsonValue value when value.TryGetValue<string>(out _) => "str",
 			JsonValue value when value.TryGetValue<bool>(out _) => "bool",
-			_ => "Any"
+			_ => "object"
 		};
 	}
 }
