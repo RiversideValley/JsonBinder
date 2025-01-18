@@ -1,4 +1,4 @@
-﻿using System.CommandLine;
+using System.CommandLine;
 using System.CommandLine.NamingConventionBinder;
 using System.Text.Json;
 
@@ -24,7 +24,7 @@ public class Program
 		var convertCommand = new Command("convert", "Convert JSON to Classes")
 		{
 			new Option<string>("--json", "The JSON string to convert"),
-			new Option<string[]>("--languages", "Comma-separated list of target languages")
+			new Option<string[]>(["--lang", "--languages"], "Comma-separated list of target languages")
 		};
 		convertCommand.Handler = CommandHandler.Create<string, string[]>(ConvertJsonToClasses);
 
