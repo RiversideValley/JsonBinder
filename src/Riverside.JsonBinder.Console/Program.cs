@@ -19,17 +19,18 @@ public class Program
 	/// <returns>The exit code of the application.</returns>
 	public static int Main(string[] args)
 	{
-		if (args.Length == 0)
-		{
-			RunInteractiveMode();
-			return 0;
-		}
-
 		var rootCommand = new RootCommand("JSON to Classes Converter")
 		{
 			new Argument<string>("json", "The JSON string to convert"),
 			new Option<string[]>(["--lang", "--languages"], "Comma-separated list of target languages")
 		};
+
+		var interactiveCommand = new Command("classic", "Enables the classic interactive Json2Any CLI mode")
+		{
+			Handler = CommandHandler.Create(RunInteractiveMode)
+		};
+
+		rootCommand.AddCommand(interactiveCommand);
 
 		rootCommand.Handler = CommandHandler.Create<string, string[]>(ConvertJsonToClasses);
 		return rootCommand.InvokeAsync(args).Result;
