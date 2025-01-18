@@ -3,7 +3,7 @@
 	<PropertyGroup>		
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>Json2Any</Title>
-		<Authors>Riverside, Lamparter</Authors>
+		<Authors>Riverside, Lamparter, NoobNotFound</Authors>
 		<Copyright>Copyright (c) Riverside Valley Corporation</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/RiversideValley/JsonBinder</RepositoryUrl>
