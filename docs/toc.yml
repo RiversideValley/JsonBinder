@@ -1,0 +1,8 @@
+- name: API
+  href: api/
+- name: Download
+  href: https://nuget.org/packages/Riverside.JsonBinder
+- name: .NET Tool
+  href: https://nuget.org/packages/Riverside.JsonBinder.Console
+- name: GitHub
+  href: https://github.com/RiversideValley/JsonBinder
