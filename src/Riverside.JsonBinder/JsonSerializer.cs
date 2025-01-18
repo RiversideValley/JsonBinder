@@ -6,12 +6,12 @@ namespace Riverside.JsonBinder;
 /// <summary>
 /// Provides functionality to convert JSON to classes in various programming languages.
 /// </summary>
-public class JsonClassConverter
+public class JsonSerializer
 {
 	/// <summary>
 	/// A dictionary mapping supported languages to their respective configurations.
 	/// </summary>
-	private static readonly Dictionary<SerializableLanguage, LanguageSerializer> LanguageConfigs = new()
+	private static readonly Dictionary<SerializableLanguage, Serialization.LanguageSerializer> LanguageConfigs = new()
 	{
 		{ SerializableLanguage.CSharp, new CSharpSerializer() },
 		{ SerializableLanguage.Python, new PythonSerializer() },
