@@ -9,15 +9,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riverside.JsonBinder.Consol
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FDCA6BBE-B3FF-4CF8-AC2F-AEA0F5A2171E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "eng", "eng", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "eng", "eng", "{A9D4D6A1-C565-435B-8CE2-36FDF6D163F8}"
 	ProjectSection(SolutionItems) = preProject
 		eng\AdditionalFiles.props = eng\AdditionalFiles.props
 		eng\CurrentVersion.props = eng\CurrentVersion.props
 		eng\PackageLogo.png = eng\PackageLogo.png
 		eng\PackageMetadata.props = eng\PackageMetadata.props
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riverside.JsonBinder.Tests", "tests\Riverside.JsonBinder.Tests\Riverside.JsonBinder.Tests.csproj", "{4197DF7D-233B-45E6-911F-485B188A6B79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{A0C21F10-32C7-4D6D-A8F1-022C808A4615}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0C21F10-32C7-4D6D-A8F1-022C808A4615}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0C21F10-32C7-4D6D-A8F1-022C808A4615}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4197DF7D-233B-45E6-911F-485B188A6B79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4197DF7D-233B-45E6-911F-485B188A6B79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4197DF7D-233B-45E6-911F-485B188A6B79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4197DF7D-233B-45E6-911F-485B188A6B79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -40,5 +46,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{0B9E827E-F59A-419F-9BAB-DBB5512627D9} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{A0C21F10-32C7-4D6D-A8F1-022C808A4615} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{4197DF7D-233B-45E6-911F-485B188A6B79} = {FDCA6BBE-B3FF-4CF8-AC2F-AEA0F5A2171E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A7D91CF4-FBEE-4762-A037-CFA995F795FC}
 	EndGlobalSection
 EndGlobal
