@@ -1,4 +1,4 @@
-using System.CommandLine;
+﻿using System.CommandLine;
 using System.CommandLine.NamingConventionBinder;
 using System.Text.Json;
 
@@ -28,13 +28,7 @@ public class Program
 		};
 		convertCommand.Handler = CommandHandler.Create<string, string[]>(ConvertJsonToClasses);
 
-		var helpCommand = new Command("help", "Display help information")
-		{
-			Handler = CommandHandler.Create(DisplayHelp)
-		};
-
 		rootCommand.AddCommand(convertCommand);
-		rootCommand.AddCommand(helpCommand);
 
 		return rootCommand.InvokeAsync(args).Result;
 	}
@@ -64,7 +58,7 @@ public class Program
 			{
 				try
 				{
-					string result = JsonClassConverter.ConvertTo(json, selectedLanguage);
+					string result = JsonSerializer.ConvertTo(json, selectedLanguage);
 					System.Console.ForegroundColor = ConsoleColor.White;
 					System.Console.WriteLine(result);
 					System.Console.ResetColor();
@@ -83,23 +77,6 @@ public class Program
 				DisplayRedMessage($"\nInvalid language choice: {choice.Trim()}\n");
 			}
 		}
-	}
-
-	/// <summary>
-	/// Displays the help information.
-	/// </summary>
-	private static void DisplayHelp()
-	{
-		System.Console.Clear();
-		System.Console.WriteLine("=========================================");
-		System.Console.WriteLine("               Help Menu");
-		System.Console.WriteLine("=========================================");
-		System.Console.WriteLine("1. Input a valid JSON string to generate classes.");
-		System.Console.WriteLine("2. Select one or more target languages by entering their corresponding names, separated by commas.");
-		System.Console.WriteLine("3. Supported languages include C#, Python, Java, JavaScript, TypeScript, PHP, Ruby, and Swift.");
-		System.Console.WriteLine("4. If an error occurs, ensure your JSON is valid and formatted correctly.");
-		System.Console.WriteLine("\nPress any key to return to the main menu...");
-		System.Console.ReadKey();
 	}
 
 	/// <summary>
