@@ -22,7 +22,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="$(RootDirectory)\README.md">
+		<None Include="$(RootDirectory)\docs\README.md">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
