@@ -7,6 +7,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riverside.JsonBinder", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riverside.JsonBinder.Console", "src\Riverside.JsonBinder.Console\Riverside.JsonBinder.Console.csproj", "{A0C21F10-32C7-4D6D-A8F1-022C808A4615}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "eng", "eng", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		eng\AdditionalFiles.props = eng\AdditionalFiles.props
+		eng\CurrentVersion.props = eng\CurrentVersion.props
+		eng\PackageLogo.png = eng\PackageLogo.png
+		eng\PackageMetadata.props = eng\PackageMetadata.props
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +36,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0B9E827E-F59A-419F-9BAB-DBB5512627D9} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{A0C21F10-32C7-4D6D-A8F1-022C808A4615} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 EndGlobal
