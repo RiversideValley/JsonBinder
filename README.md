@@ -1,4 +1,4 @@
-## 🧩  Riverside.JsonBinder
+# 🧩  Riverside.JsonBinder
 
 Riverside.JsonBinder is a .NET based library that generates language-specific class representations from JSON input. It supports multiple programming languages. This was entirely created by AI.
 
@@ -12,6 +12,7 @@ Riverside.JsonBinder is a .NET based library that generates language-specific cl
 ## 🛠️ Usage
 
 ### 📚 Using the Library
+
 To use the library in your .NET 9 project, include the `Riverside.JsonBinder` namespace and call the static method `JsonClassConverter.ConvertTo`:
 
 ```csharp
@@ -23,10 +24,12 @@ Console.WriteLine(result);
 ```
 
 This method takes two parameters:
+
 1. `json`: A string containing the JSON input.
 2. `language`: An enum specifying the target language.
 
 Supported languages include:
+
 - `Language.CSharp`
 - `Language.Python`
 - `Language.Java`
@@ -50,7 +53,6 @@ The program will display the generated classes for the chosen languages in an or
 
 - ❌ Invalid JSON displays an error in **red** and returns to the main menu.
 
-
 ### 📋 Requirements
 
 - .NET 9.0 or later.
@@ -58,10 +60,9 @@ The program will display the generated classes for the chosen languages in an or
 
 ## ⚖️ License
 
-This project, including the library `Riverside.JsonBinder`, is licensed under the **GNU General Public License v3.0**. You are free to use, modify, and distribute the software, provided you adhere to the terms of the license.
+This project, including the library `Riverside.JsonBinder`, is licensed under the **MIT License**. You are free to use, modify, and distribute the software, provided you adhere to the terms of the license.
 
 ---
   
 ***Entirely crafted by AI magic.***  
 *GPT4o & Claude 3.5 Sonnet.*
-
