@@ -2,12 +2,12 @@
 
 public enum Language
 {
-    CSharp,
-    Python,
-    Java,
-    JavaScript,
-    TypeScript,
-    PHP,
-    Ruby,
-    Swift
+	CSharp,
+	Python,
+	Java,
+	JavaScript,
+	TypeScript,
+	PHP,
+	Ruby,
+	Swift
 }
