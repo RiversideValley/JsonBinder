@@ -27,7 +27,7 @@ jobs:
         dotnet-version: '9.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore --framework ${{ matrix.target-framework }}
+      run: dotnet restore
 
     - name: Build
       if: matrix.os == 'windows-latest' || (matrix.os == 'ubuntu-latest' && matrix.target-framework != 'net481')
