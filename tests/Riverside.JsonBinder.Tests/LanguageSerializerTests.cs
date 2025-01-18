@@ -79,7 +79,11 @@ public class LanguageSerializerTests
 		yield return new object[] { SerializableLanguage.CSharp, "{\"name\":\"John\"}", "public class Root\n{\n    public string name { get; set; }\n}" };
 		yield return new object[] { SerializableLanguage.Python, "{\"name\":\"John\"}", "class Root:\n    def __init__(self):\n        self.name: str = None" };
 		yield return new object[] { SerializableLanguage.Java, "{\"name\":\"John\"}", "public class Root {\n    private String name;\n    public String getname() { return name; }\n    public void setname(String name) { this.name = name; }\n}" };
-		// Add more test data for other languages as needed
+		yield return new object[] { SerializableLanguage.JavaScript, "{\"name\":\"John\"}", "class Root {\n    constructor() {\n        this.name = null;\n    }\n}" };
+		yield return new object[] { SerializableLanguage.TypeScript, "{\"name\":\"John\"}", "class Root {\n    constructor() {\n        this.name = null;\n    }\n}" };
+		yield return new object[] { SerializableLanguage.PHP, "{\"name\":\"John\"}", "class Root {\n    public $name;\n}" };
+		yield return new object[] { SerializableLanguage.Ruby, "{\"name\":\"John\"}", "class Root\n    attr_accessor :name\nend" };
+		yield return new object[] { SerializableLanguage.Swift, "{\"name\":\"John\"}", "struct Root {\n    var name: String?\n}" };
 	}
 
 	public static IEnumerable<object[]> GetInvalidJsonTestData()
@@ -87,6 +91,10 @@ public class LanguageSerializerTests
 		yield return new object[] { SerializableLanguage.CSharp, "invalid json" };
 		yield return new object[] { SerializableLanguage.Python, "invalid json" };
 		yield return new object[] { SerializableLanguage.Java, "invalid json" };
-		// Add more invalid JSON test data for other languages as needed
+		yield return new object[] { SerializableLanguage.JavaScript, "invalid json" };
+		yield return new object[] { SerializableLanguage.TypeScript, "invalid json" };
+		yield return new object[] { SerializableLanguage.PHP, "invalid json" };
+		yield return new object[] { SerializableLanguage.Ruby, "invalid json" };
+		yield return new object[] { SerializableLanguage.Swift, "invalid json" };
 	}
 }
