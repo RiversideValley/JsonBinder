@@ -1,4 +1,4 @@
-using System.CommandLine;
+﻿using System.CommandLine;
 using System.Text.Json;
 using System.CommandLine.NamingConventionBinder;
 using Riverside.JsonBinder;
@@ -43,11 +43,6 @@ public class Program
             return;
         }
 
-        System.Console.Clear();
-        System.Console.WriteLine("=========================================");
-        System.Console.WriteLine("      Generating Classes");
-        System.Console.WriteLine("=========================================");
-
         foreach (string choice in languages)
         {
             if (Enum.TryParse<Language>(choice.Trim(), true, out var selectedLanguage))
@@ -55,12 +50,9 @@ public class Program
                 try
                 {
                     string result = JsonClassConverter.ConvertTo(json, selectedLanguage);
-                    System.Console.ForegroundColor = ConsoleColor.Green;
-                    System.Console.WriteLine("========================================================");
-                    System.Console.WriteLine($"\n{selectedLanguage} Classes:\n");
-                    System.Console.WriteLine("========================================================");
-                    System.Console.ResetColor();
+                    System.Console.ForegroundColor = ConsoleColor.White;
                     System.Console.WriteLine(result);
+                    System.Console.ResetColor();
                 }
                 catch (JsonException ex)
                 {
