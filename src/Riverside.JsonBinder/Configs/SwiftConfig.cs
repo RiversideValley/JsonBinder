@@ -2,8 +2,17 @@
 
 namespace Riverside.JsonBinder.Configs;
 
+/// <summary>
+/// Configuration for generating Swift structs from JSON.
+/// </summary>
 public class SwiftConfig : LanguageConfig
 {
+	/// <summary>
+	/// Generates Swift structs from the provided JSON node.
+	/// </summary>
+	/// <param name="node">The JSON node to convert.</param>
+	/// <param name="className">The name of the root struct.</param>
+	/// <returns>A string containing the generated Swift structs.</returns>
 	public override string GenerateClasses(JsonNode node, string className)
 	{
 		var classes = new List<string>();
@@ -11,6 +20,12 @@ public class SwiftConfig : LanguageConfig
 		return string.Join("\n\n", classes);
 	}
 
+	/// <summary>
+	/// Processes a JSON node and generates the corresponding Swift struct definition.
+	/// </summary>
+	/// <param name="node">The JSON node to process.</param>
+	/// <param name="className">The name of the struct to generate.</param>
+	/// <param name="classes">The list of generated struct definitions.</param>
 	private void ProcessNode(JsonNode node, string className, List<string> classes)
 	{
 		if (node is JsonObject obj)
@@ -49,6 +64,12 @@ public class SwiftConfig : LanguageConfig
 		}
 	}
 
+	/// <summary>
+	/// Gets the Swift type for a given JSON node.
+	/// </summary>
+	/// <param name="node">The JSON node to evaluate.</param>
+	/// <param name="propertyName">The name of the property.</param>
+	/// <returns>The Swift type as a string.</returns>
 	public override string GetType(JsonNode? node, string propertyName)
 	{
 		return node switch
@@ -63,4 +84,3 @@ public class SwiftConfig : LanguageConfig
 		};
 	}
 }
-

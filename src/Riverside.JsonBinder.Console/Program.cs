@@ -4,8 +4,19 @@ using System.Text.Json;
 
 namespace Riverside.JsonBinder.Console;
 
+/// <summary>
+/// Program class for the JSON Binder console application.
+/// </summary>
+/// <remarks>
+/// This was originally made by AI but refactored using the powerful <see cref="System.CommandLine"/> library.
+/// </remarks>
 public class Program
 {
+	/// <summary>
+	/// The main entry point for the application.
+	/// </summary>
+	/// <param name="args">The command-line arguments.</param>
+	/// <returns>The exit code of the application.</returns>
 	public static int Main(string[] args)
 	{
 		var rootCommand = new RootCommand("JSON to Classes Converter");
@@ -28,6 +39,11 @@ public class Program
 		return rootCommand.InvokeAsync(args).Result;
 	}
 
+	/// <summary>
+	/// Converts the provided JSON string to classes in the specified languages.
+	/// </summary>
+	/// <param name="json">The JSON string to convert.</param>
+	/// <param name="languages">The target languages for the conversion.</param>
 	private static void ConvertJsonToClasses(string json, string[] languages)
 	{
 		if (string.IsNullOrWhiteSpace(json))
@@ -69,6 +85,9 @@ public class Program
 		}
 	}
 
+	/// <summary>
+	/// Displays the help information.
+	/// </summary>
 	private static void DisplayHelp()
 	{
 		System.Console.Clear();
@@ -83,12 +102,22 @@ public class Program
 		System.Console.ReadKey();
 	}
 
+	/// <summary>
+	/// Displays an error message with the specified title and details.
+	/// </summary>
+	/// <param name="title">The title of the error.</param>
+	/// <param name="details">The details of the error.</param>
 	private static void DisplayError(string title, string details)
 	{
 		DisplayRedMessage($"\nError: {title}", false);
 		DisplayRedMessage($"Details: {details}\n");
 	}
 
+	/// <summary>
+	/// Displays a message in red color.
+	/// </summary>
+	/// <param name="message">The message to display.</param>
+	/// <param name="colorResets">Indicates whether to reset the color after displaying the message.</param>
 	private static void DisplayRedMessage(string message, bool? colorResets = true)
 	{
 		System.Console.ForegroundColor = ConsoleColor.Red;
