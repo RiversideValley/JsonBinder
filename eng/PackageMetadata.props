@@ -30,7 +30,7 @@
 
 	<ItemGroup>
 		<Content Include="$(BuildDirectory)\PackageLogo.png">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</Content>
