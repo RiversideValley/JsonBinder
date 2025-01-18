@@ -1,4 +1,4 @@
-using Riverside.JsonBinder.Configs;
+﻿using Riverside.JsonBinder.Configs;
 using System.Text.Json.Nodes;
 
 namespace Riverside.JsonBinder;
