@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<PropertyGroup>		
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>Json2Any</Title>
+		<Authors>Riverside, Lamparter</Authors>
+		<Copyright>Copyright (c) Riverside Valley Corporation</Copyright>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/Lamparter/Rosetta</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>json; console; csharp; parser; json-parser; riverside</PackageTags>
+		<Company>Riverside Valley Corporation</Company>
+		<Description>Convert JSON to any language!</Description>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<IncludeSymbols>True</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageIcon>PackageLogo.png</PackageIcon>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="$(RootDirectory)\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="$(BuildDirectory)\PackageLogo.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</Content>
+	</ItemGroup>
+</Project>
