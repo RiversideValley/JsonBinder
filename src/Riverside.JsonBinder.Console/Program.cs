@@ -1,7 +1,6 @@
 ﻿using System.CommandLine;
-using System.Text.Json;
 using System.CommandLine.NamingConventionBinder;
-using Riverside.JsonBinder;
+using System.Text.Json;
 
 namespace Riverside.JsonBinder.Console;
 
