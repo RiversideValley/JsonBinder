@@ -13,7 +13,7 @@ Riverside.JsonBinder is a .NET based library that generates language-specific cl
 
 ### 📚 Using the Library
 
-To use the library in your .NET 9 project, include the `Riverside.JsonBinder` namespace and call the static method `JsonClassConverter.ConvertTo`:
+To use the library in your .NET project, include the `Riverside.JsonBinder` namespace and call the static method `JsonClassConverter.ConvertTo`:
 
 ```csharp
 using Riverside.JsonBinder;
@@ -45,7 +45,7 @@ You can use the output directly in your projects or customize it as needed.
 
 To see the library in action:
 
-1. Compile the solution using .NET 9.
+1. Compile the solution using your chosen TFM.
 2. Run the `Riverside.JsonBinder.Console` project.
 3. Use the interactive menu to input JSON and select target languages.
 
@@ -55,7 +55,7 @@ The program will display the generated classes for the chosen languages in an or
 
 ### 📋 Requirements
 
-- .NET 9.0 or later.
+- Any version of .NET
 - Basic understanding of JSON and object-oriented programming.
 
 ## ⚖️ License
