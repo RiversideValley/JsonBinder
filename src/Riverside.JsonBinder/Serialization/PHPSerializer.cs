@@ -30,7 +30,7 @@ public class PHPSerializer : LanguageSerializer
 	{
 		if (node is JsonObject obj)
 		{
-			var classDef = $"class {className} {{\n";
+			var classDef = $"class {className} {{";
 			foreach (var property in obj)
 			{
 				classDef += $"\n    public ${property.Key};";
