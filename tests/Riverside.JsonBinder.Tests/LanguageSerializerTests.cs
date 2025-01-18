@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Nodes;
+using System.Text.Json.Nodes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Riverside.JsonBinder.Serialization;
 using System.Reflection;
@@ -26,10 +26,20 @@ public class LanguageSerializerTests
 	public void GenerateClasses_ValidJson_ReturnsExpectedResult(SerializableLanguage language, string json, string expected)
 	{
 		// Arrange
-		var serializer = (LanguageSerializer)Activator.CreateInstance(SerializerTypes[language]);
+		if (!SerializerTypes.TryGetValue(language, out var serializerType) || serializerType == null)
+		{
+			Assert.Fail($"Serializer for language {language} not found.");
+			return;
+		}
+
+		var serializer = (LanguageSerializer?)Activator.CreateInstance(serializerType);
+		Assert.IsNotNull(serializer, $"Failed to create instance of {serializerType}");
 
 		// Act
-		var result = serializer.GenerateClasses(JsonNode.Parse(json), "Root");
+		var jsonNode = JsonNode.Parse(json);
+		Assert.IsNotNull(jsonNode, "Failed to parse JSON");
+
+		var result = serializer.GenerateClasses(jsonNode, "Root");
 
 		// Assert
 		Assert.AreEqual(expected.Normalize(), result.Normalize());
@@ -40,12 +50,22 @@ public class LanguageSerializerTests
 	public void GenerateClasses_InvalidJson_ThrowsException(SerializableLanguage language, string invalidJson)
 	{
 		// Arrange
-		var serializer = (LanguageSerializer)Activator.CreateInstance(SerializerTypes[language]);
+		if (!SerializerTypes.TryGetValue(language, out var serializerType) || serializerType == null)
+		{
+			Assert.Fail($"Serializer for language {language} not found.");
+			return;
+		}
+
+		var serializer = (LanguageSerializer?)Activator.CreateInstance(serializerType);
+		Assert.IsNotNull(serializer, $"Failed to create instance of {serializerType}");
 
 		// Act
 		try
 		{
-			serializer.GenerateClasses(JsonNode.Parse(invalidJson), "Root");
+			var jsonNode = JsonNode.Parse(invalidJson);
+			Assert.IsNotNull(jsonNode, "Failed to parse JSON");
+
+			serializer.GenerateClasses(jsonNode, "Root");
 		}
 		catch (Exception ex)
 		{
