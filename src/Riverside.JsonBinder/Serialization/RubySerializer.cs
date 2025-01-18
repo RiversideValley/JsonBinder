@@ -32,6 +32,7 @@ public class RubySerializer : LanguageSerializer
 		{
 			var classDef = $"class {className}\n    attr_accessor ";
 			classDef += string.Join(", ", obj.Select(property => $":{property.Key}"));
+			classDef += "\nend";
 			classes.Add(classDef);
 
 			foreach (var property in obj)
