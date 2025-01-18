@@ -39,7 +39,6 @@ public class JsonSerializerTests
 			// Assert
 			Assert.AreEqual("'i' is an invalid start of a value. LineNumber: 0 | BytePositionInLine: 0.", ex.Message);
 		}
-
 	}
 
 	[TestMethod]
