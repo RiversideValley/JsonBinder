@@ -1,4 +1,4 @@
-﻿using System.CommandLine;
+using System.CommandLine;
 using System.CommandLine.NamingConventionBinder;
 using System.Text.Json;
 
@@ -19,16 +19,13 @@ public class Program
 	/// <returns>The exit code of the application.</returns>
 	public static int Main(string[] args)
 	{
-		var rootCommand = new RootCommand("JSON to Classes Converter");
-
-		var convertCommand = new Command("convert", "Convert JSON to Classes")
+		var rootCommand = new RootCommand("JSON to Classes Converter")
 		{
-			new Option<string>("--json", "The JSON string to convert"),
+			new Argument<string>("json", "The JSON string to convert"),
 			new Option<string[]>(["--lang", "--languages"], "Comma-separated list of target languages")
 		};
-		convertCommand.Handler = CommandHandler.Create<string, string[]>(ConvertJsonToClasses);
 
-		rootCommand.AddCommand(convertCommand);
+		rootCommand.Handler = CommandHandler.Create<string, string[]>(ConvertJsonToClasses);
 
 		return rootCommand.InvokeAsync(args).Result;
 	}
