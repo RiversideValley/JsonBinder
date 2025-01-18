@@ -23,14 +23,8 @@ public class Program
             Handler = CommandHandler.Create(DisplayHelp)
         };
 
-        var exitCommand = new Command("exit", "Exit the application")
-        {
-            Handler = CommandHandler.Create(ExitApplication)
-        };
-
         rootCommand.AddCommand(convertCommand);
         rootCommand.AddCommand(helpCommand);
-        rootCommand.AddCommand(exitCommand);
 
         return rootCommand.InvokeAsync(args).Result;
     }
@@ -102,19 +96,6 @@ public class Program
         System.Console.WriteLine("4. If an error occurs, ensure your JSON is valid and formatted correctly.");
         System.Console.WriteLine("\nPress any key to return to the main menu...");
         System.Console.ReadKey();
-    }
-
-    private static void ExitApplication()
-    {
-        System.Console.Clear();
-        System.Console.Write("Are you sure you want to exit? (y/n): ");
-        string confirmation = System.Console.ReadLine()?.Trim().ToLower();
-
-        if (confirmation == "y" || confirmation == "yes")
-        {
-            System.Console.WriteLine("\nThank you for using the converter. Goodbye!");
-            Environment.Exit(0);
-        }
     }
 
     private static void DisplayError(string title, string details)
