@@ -1,6 +1,7 @@
 using System.CommandLine;
 using System.CommandLine.NamingConventionBinder;
 using System.Text.Json;
+using Riverside.JsonBinder.Console.Helpers;
 
 namespace Riverside.JsonBinder.Console;
 
@@ -59,7 +60,7 @@ public class Program
 						return;
 					break;
 				default:
-					DisplayRedMessage("Invalid option. Please select a valid menu option.\n");
+					ConsoleHelpers.DisplayRedMessage("Invalid option. Please select a valid menu option.\n");
 					break;
 			}
 		}
@@ -99,8 +100,8 @@ public class Program
 		var selectedLanguages = SelectLanguagesInteractive();
 		if (selectedLanguages.Count == 0)
 		{
-			DisplayRedMessage("\nNo languages selected. Please try again.\n");
-			PressAnyKey();
+			ConsoleHelpers.DisplayRedMessage("\nNo languages selected. Please try again.\n");
+			ConsoleHelpers.PressAnyKey();
 			return;
 		}
 
@@ -121,15 +122,15 @@ public class Program
 			}
 			catch (JsonException ex)
 			{
-				DisplayError("Invalid JSON format.", ex.Message);
+				ConsoleHelpers.DisplayError("Invalid JSON format.", ex.Message);
 			}
 			catch (Exception ex)
 			{
-				DisplayError("An unexpected error occurred.", ex.Message);
+				ConsoleHelpers.DisplayError("An unexpected error occurred.", ex.Message);
 			}
 		}
 
-		PressAnyKey();
+		ConsoleHelpers.PressAnyKey();
 	}
 
 	/// <summary>
@@ -192,13 +193,13 @@ public class Program
 	{
 		if (string.IsNullOrWhiteSpace(json))
 		{
-			DisplayRedMessage("No JSON provided. Please try again.\n");
+			ConsoleHelpers.DisplayRedMessage("No JSON provided. Please try again.\n");
 			return;
 		}
 
 		if (languages == null || languages.Length == 0)
 		{
-			DisplayRedMessage("No languages selected. Please try again.\n");
+			ConsoleHelpers.DisplayRedMessage("No languages selected. Please try again.\n");
 			return;
 		}
 
@@ -214,16 +215,16 @@ public class Program
 				}
 				catch (JsonException ex)
 				{
-					DisplayError("Invalid JSON format.", ex.Message);
+					ConsoleHelpers.DisplayError("Invalid JSON format.", ex.Message);
 				}
 				catch (Exception ex)
 				{
-					DisplayError("An unexpected error occurred.", ex.Message);
+					ConsoleHelpers.DisplayError("An unexpected error occurred.", ex.Message);
 				}
 			}
 			else
 			{
-				DisplayRedMessage($"\nInvalid language choice: {choice.Trim()}\n");
+				ConsoleHelpers.DisplayRedMessage($"\nInvalid language choice: {choice.Trim()}\n");
 			}
 		}
 	}
@@ -259,38 +260,5 @@ public class Program
 		System.Console.Write("Are you sure you want to exit? (y/n): ");
 		string? confirmation = System.Console.ReadLine()?.Trim().ToLower();
 		return confirmation == "y" || confirmation == "yes";
-	}
-
-	/// <summary>
-	/// Displays an error message with the specified title and details.
-	/// </summary>
-	/// <param name="title">The title of the error.</param>
-	/// <param name="details">The details of the error.</param>
-	private static void DisplayError(string title, string details)
-	{
-		DisplayRedMessage($"\nError: {title}", false);
-		DisplayRedMessage($"Details: {details}\n");
-	}
-
-	/// <summary>
-	/// Displays a message in red color.
-	/// </summary>
-	/// <param name="message">The message to display.</param>
-	/// <param name="colorResets">Indicates whether to reset the color after displaying the message.</param>
-	private static void DisplayRedMessage(string message, bool? colorResets = true)
-	{
-		System.Console.ForegroundColor = ConsoleColor.Red;
-		System.Console.WriteLine(message);
-		if (colorResets is true)
-			System.Console.ResetColor();
-	}
-
-	/// <summary>
-	/// Displays a "Press any key to continue" message and waits for input.
-	/// </summary>
-	private static void PressAnyKey()
-	{
-		System.Console.WriteLine("\nPress any key to continue...");
-		System.Console.ReadKey();
 	}
 }
