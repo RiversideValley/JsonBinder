@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "JsonBinder Console": {
+      "commandName": "Project",
+      "commandLineArgs": "",
+      "launchBrowser": false
+    },
+    "JsonBinder Classic": {
+      "commandName": "Project",
+      "commandLineArgs": "classic",
+      "launchBrowser": false
+    }
+  }
+}
+
