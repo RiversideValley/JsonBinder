@@ -2,7 +2,7 @@
 
 namespace Riverside.JsonBinder.Console.Helpers;
 
-public class SyntaxHighlighter
+public static class SyntaxHighlighter
 {
 	private static readonly Dictionary<SerializableLanguage, List<SyntaxRule>> SyntaxRulesByLanguage = new()
 	{
@@ -217,9 +217,7 @@ public class SyntaxHighlighter
 			}
 	};
 
-
-
-	public void DisplayCodeWithColors(string code, SerializableLanguage language)
+	public static void DisplayCodeWithColors(string code, SerializableLanguage language)
 	{
 		if (!SyntaxRulesByLanguage.ContainsKey(language))
 		{
@@ -291,17 +289,5 @@ public class SyntaxHighlighter
 
 		System.Console.ResetColor();
 		System.Console.WriteLine();
-	}
-}
-
-public class SyntaxRule
-{
-	public string Pattern { get; }
-	public ConsoleColor Color { get; }
-
-	public SyntaxRule(string pattern, ConsoleColor color)
-	{
-		Pattern = pattern;
-		Color = color;
 	}
 }
