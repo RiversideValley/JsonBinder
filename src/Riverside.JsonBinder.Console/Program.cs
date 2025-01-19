@@ -1,7 +1,7 @@
+using Riverside.JsonBinder.Console.Helpers;
 using System.CommandLine;
 using System.CommandLine.NamingConventionBinder;
 using System.Text.Json;
-using Riverside.JsonBinder.Console.Helpers;
 
 namespace Riverside.JsonBinder.Console;
 

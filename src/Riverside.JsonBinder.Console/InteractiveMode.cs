@@ -81,6 +81,7 @@ public class InteractiveMode
 		System.Console.WriteLine("=========================================");
 		System.Console.WriteLine("      Generating Classes");
 		System.Console.WriteLine("=========================================");
+
 		foreach (var language in selectedLanguages)
 		{
 			try
@@ -102,7 +103,6 @@ public class InteractiveMode
 				ConsoleHelpers.DisplayError("An unexpected error occurred.", ex.Message);
 			}
 		}
-
 
 		ConsoleHelpers.PressAnyKey();
 	}
