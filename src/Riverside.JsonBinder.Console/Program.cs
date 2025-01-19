@@ -53,7 +53,6 @@ public class Program
 			return;
 		}
 
-		var syntaxHighlighter = new SyntaxHighlighter();
 		foreach (string choice in languages)
 		{
 			if (Enum.TryParse<SerializableLanguage>(choice.Trim(), true, out var selectedLanguage))
@@ -62,7 +61,7 @@ public class Program
 				{
 					string result = JsonSerializer.ConvertTo(json, selectedLanguage);
 					System.Console.WriteLine($"\n{selectedLanguage} Classes:\n");
-					syntaxHighlighter.DisplayCodeWithColors(result, selectedLanguage);
+					SyntaxHighlighter.DisplayCodeWithColors(result, selectedLanguage);
 				}
 				catch (JsonException ex)
 				{

@@ -81,7 +81,6 @@ public class InteractiveMode
 		System.Console.WriteLine("=========================================");
 		System.Console.WriteLine("      Generating Classes");
 		System.Console.WriteLine("=========================================");
-		var syntaxHighlighter = new SyntaxHighlighter();
 		foreach (var language in selectedLanguages)
 		{
 			try
@@ -92,7 +91,7 @@ public class InteractiveMode
 				System.Console.ResetColor();
 
 				// Use SyntaxHighlighter to display the code with colors
-				syntaxHighlighter.DisplayCodeWithColors(result, language);
+				SyntaxHighlighter.DisplayCodeWithColors(result, language);
 			}
 			catch (JsonException ex)
 			{
