@@ -1,7 +1,7 @@
+using Riverside.JsonBinder.Console.Helpers;
 using System.CommandLine;
 using System.CommandLine.NamingConventionBinder;
 using System.Text.Json;
-using Riverside.JsonBinder.Console.Helpers;
 
 namespace Riverside.JsonBinder.Console;
 
@@ -61,7 +61,7 @@ public class Program
 				{
 					string result = JsonSerializer.ConvertTo(json, selectedLanguage);
 					System.Console.WriteLine($"\n{selectedLanguage} Classes:\n");
-					System.Console.WriteLine(result);
+					SyntaxHighlighter.DisplayCodeWithColors(result, selectedLanguage);
 				}
 				catch (JsonException ex)
 				{

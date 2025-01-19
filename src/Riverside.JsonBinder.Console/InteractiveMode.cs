@@ -87,10 +87,12 @@ public class InteractiveMode
 			try
 			{
 				string result = JsonSerializer.ConvertTo(json, language);
-				System.Console.ForegroundColor = ConsoleColor.Green;
+				System.Console.ForegroundColor = ConsoleColor.Blue;
 				System.Console.WriteLine($"\n{language} Classes:\n");
 				System.Console.ResetColor();
-				System.Console.WriteLine(result);
+
+				// Use SyntaxHighlighter to display the code with colors
+				SyntaxHighlighter.DisplayCodeWithColors(result, language);
 			}
 			catch (JsonException ex)
 			{
