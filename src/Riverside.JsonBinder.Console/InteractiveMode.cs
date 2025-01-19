@@ -87,7 +87,7 @@ public class InteractiveMode
 			try
 			{
 				string result = JsonSerializer.ConvertTo(json, language);
-				System.Console.ForegroundColor = ConsoleColor.Green;
+				System.Console.ForegroundColor = ConsoleColor.Blue;
 				System.Console.WriteLine($"\n{language} Classes:\n");
 				System.Console.ResetColor();
 
