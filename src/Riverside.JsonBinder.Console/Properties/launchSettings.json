@@ -1,8 +1,10 @@
 {
   "profiles": {
     "JsonBinder Console": {
-      "commandName": "Project",
-      "commandLineArgs": "",
+      "commandName": "Executable",
+      "executablePath": "powershell.exe",
+      "workingDirectory": "$(OutputPath)",
+      "commandLineArgs": "-NoExit -Command \"& { .\\bin\\Debug\\net9.0\\Riverside.JsonBinder.Console.exe }\"",
       "launchBrowser": false
     },
     "JsonBinder Classic": {
@@ -12,4 +14,3 @@
     }
   }
 }
-
