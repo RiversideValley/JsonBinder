@@ -81,7 +81,7 @@ public class InteractiveMode
 		System.Console.WriteLine("=========================================");
 		System.Console.WriteLine("      Generating Classes");
 		System.Console.WriteLine("=========================================");
-
+		var syntaxHighlighter = new SyntaxHighlighter();
 		foreach (var language in selectedLanguages)
 		{
 			try
@@ -90,7 +90,9 @@ public class InteractiveMode
 				System.Console.ForegroundColor = ConsoleColor.Green;
 				System.Console.WriteLine($"\n{language} Classes:\n");
 				System.Console.ResetColor();
-				System.Console.WriteLine(result);
+
+				// Use SyntaxHighlighter to display the code with colors
+				syntaxHighlighter.DisplayCodeWithColors(result, language);
 			}
 			catch (JsonException ex)
 			{
@@ -101,6 +103,7 @@ public class InteractiveMode
 				ConsoleHelpers.DisplayError("An unexpected error occurred.", ex.Message);
 			}
 		}
+
 
 		ConsoleHelpers.PressAnyKey();
 	}
