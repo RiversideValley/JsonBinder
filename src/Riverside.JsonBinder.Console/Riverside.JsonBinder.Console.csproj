@@ -15,7 +15,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Riverside.JsonBinder\Riverside.JsonBinder.csproj" />
+		<ProjectReference Condition="'$(Configuration)' == 'Debug'" Include="..\Riverside.JsonBinder\Riverside.JsonBinder.csproj" />
+		<PackageReference Condition="'$(Configuration)' == 'Release'" Include="Riverside.JsonBinder" Version="$(DisplayVersion)" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(ContinuousIntegrationBuild)' == 'true'">
