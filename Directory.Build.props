@@ -18,4 +18,9 @@
 		<DisplayVersion Condition="'$(ReleaseLevel)' != 'final'">$(DisplayVersion)-$(ReleaseLevel)$(BetaVersion)</DisplayVersion>
 		<Version>$(DisplayVersion)</Version>
 	</PropertyGroup>
+
+	<!-- Deterministic build -->
+	<PropertyGroup Condition="'$(TF_BUILD)' == 'true' or '$(GITHUB_ACTIONS)' == 'true'">
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+	</PropertyGroup>
 </Project>
