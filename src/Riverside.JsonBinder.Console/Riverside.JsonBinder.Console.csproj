@@ -15,7 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Riverside.JsonBinder\Riverside.JsonBinder.csproj" />
+		<ProjectReference Include="..\Riverside.JsonBinder\Riverside.JsonBinder.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(ContinuousIntegrationBuild)' == 'true'">
