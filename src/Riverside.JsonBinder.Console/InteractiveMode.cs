@@ -100,6 +100,7 @@ public class InteractiveMode
 			}
 			catch (Exception ex)
 			{
+				throw;
 				ConsoleHelpers.DisplayError("An unexpected error occurred.", ex.Message);
 			}
 		}
