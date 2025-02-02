@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace Riverside.JsonBinder.Serialization;
 
@@ -33,7 +34,8 @@ public class CSharpSerializer : LanguageSerializer
 			var classDef = $"public class {className}\n{{";
 			foreach (var property in obj)
 			{
-				var propType = GetType(property.Value, ToPascalCase(property.Key));
+				var propType = GetType(property.Value, className + '_' + ToPascalCase(property.Key));
+				classDef += $"\n\n    [JsonPropertyName(\"{property.Key}\")]";
 				classDef += $"\n    public {propType} {ToPascalCase(property.Key)} {{ get; set; }}";
 			}
 			classDef += "\n}";
@@ -41,18 +43,15 @@ public class CSharpSerializer : LanguageSerializer
 
 			foreach (var property in obj)
 			{
-				if (property.Value is JsonObject || property.Value is JsonArray)
+				if (property.Value is JsonObject)
 				{
-					ProcessNode(property.Value, ToPascalCase(property.Key), classes);
+					ProcessNode(property.Value, className + '_' + ToPascalCase(property.Key), classes);
 				}
-			}
-		}
-		else if (node is JsonArray array && array.Count > 0)
-		{
-			var firstElement = array[0];
-			if (firstElement is JsonObject || firstElement is JsonArray)
-			{
-				ProcessNode(firstElement, className + "Item", classes);
+				else if (property.Value is JsonArray array && array.Count > 0 && array[0] is JsonObject)
+				{
+					// Only process arrays of objects
+					ProcessNode(array[0], className + '_' + ToPascalCase(property.Key + "Item"), classes);
+				}
 			}
 		}
 	}
@@ -65,15 +64,21 @@ public class CSharpSerializer : LanguageSerializer
 	/// <returns>The C# type as a string.</returns>
 	public override string GetType(JsonNode? node, string propertyName)
 	{
-		return node switch
+		if (node is JsonArray array && array.Count > 0)
 		{
-			JsonObject => propertyName,
-			JsonArray => $"List<{propertyName}Item>",
-			JsonValue value when value.TryGetValue<int>(out _) => "int",
-			JsonValue value when value.TryGetValue<double>(out _) => "double",
-			JsonValue value when value.TryGetValue<string>(out _) => "string",
-			JsonValue value when value.TryGetValue<bool>(out _) => "bool",
-			_ => "object"
-		};
+			var firstElement = array[0];
+			if (firstElement is JsonValue val)
+			{
+				return $"List<{GetValueType(val, SerializableLanguage.CSharp)}>";
+			}
+			// Handle complex object arrays
+			return $"List<{propertyName}Item>";
+		}
+		else if (node is JsonObject)
+			return propertyName;
+		else if (node is JsonValue val)
+			return GetValueType(val, SerializableLanguage.CSharp);
+
+		return "object";
 	}
 }
