@@ -26,10 +26,10 @@ jobs:
         dotnet-version: '9.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore /p:GITHUB_ACTIONS=true
 
     - name: Build
-      run: dotnet build --configuration ${{ matrix.configuration }} --no-restore
+      run: dotnet build --configuration ${{ matrix.configuration }} --no-restore /p:GITHUB_ACTIONS=true
 
   test:
     name: Test
@@ -52,4 +52,4 @@ jobs:
         dotnet-version: '9.0.x'
 
     - name: Test
-      run: dotnet test --configuration Release --verbosity normal
+      run: dotnet test --configuration Release --verbosity normal  /p:GITHUB_ACTIONS=true
